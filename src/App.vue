@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="./assets/img/suade.png">
     <h1>{{ msg }}</h1>
+    <h3>{{ created_by }}</h3>
 
-    <div id="chartdiv" style="width: 100%; height: 400px;"></div>
+    <div id="pie-chart" style="width: 100%; height: 400px;"></div>
+    <div id="bar-chart" style="width: 100%; height: 400px;"></div>
 
     <h2>Essential Links</h2>
     <ul>
@@ -23,65 +25,91 @@
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
-  created () {
-    AmCharts.makeChart("chartdiv",
-      {
-        "type": "serial",
-        "categoryField": "type",
-        "chartCursor": {},
-        "graphs": [
-          {
-            "type": "column",
-            "title": "Pizza types",
-            "valueField": "sold",
-            "fillAlphas": 0.8
-          }
-        ],
+  export default {
+    name: 'app',
 
-        "dataProvider": [
-          { "type": "Margherita", "sold": 120 },
-          { "type": "Funghi", "sold": 82 },
-          { "type": "Capricciosa", "sold": 78 },
-          { "type": "Quattro Stagioni", "sold": 71 }
-        ]
+    data () {
+      return {
+        msg: 'Welcome to the Suade Labs Data Visualisation Dashboard',
+        author: `Josef van Niekerk`,
+        created_by: `Created by Josef van Niekerk`,
       }
-    );
+    },
+
+    created () {
+      AmCharts.makeChart('pie-chart',
+        {
+          'type': 'pie',
+          'titleField': 'category',
+          'valueField': 'column-1',
+          'dataProvider': [
+            {
+              'category': 'category 1',
+              'column-1': 8
+            },
+            {
+              'category': 'category 2',
+              'column-1': 6
+            },
+            {
+              'category': 'category 3',
+              'column-1': 2
+            }
+          ]
+        }
+      ),
+
+        AmCharts.makeChart('bar-chart',
+          {
+            'type': 'serial',
+            'categoryField': 'type',
+            'chartCursor': {},
+            'graphs': [
+              {
+                'type': 'column',
+                'title': 'Pizza types',
+                'valueField': 'sold',
+                'fillAlphas': 0.8
+              }
+            ],
+
+            'dataProvider': [
+              { 'type': 'Margherita', 'sold': 120 },
+              { 'type': 'Funghi', 'sold': 82 },
+              { 'type': 'Capricciosa', 'sold': 78 },
+              { 'type': 'Quattro Stagioni', 'sold': 71 }
+            ]
+          }
+        )
+    },
   }
-}
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 
-h1, h2 {
-  font-weight: normal;
-}
+  h1, h2 {
+    font-weight: normal;
+  }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
 
-a {
-  color: #42b983;
-}
+  a {
+    color: #42b983;
+  }
 </style>
