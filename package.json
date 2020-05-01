@@ -1,6 +1,6 @@
 {
-  "name": "frontend-js-challenge",
-  "description": "Suade Labs Frontend JavaScript Challenge",
+  "name": "vue-amcharts",
+  "description": "A Vue.js project",
   "version": "1.0.0",
   "author": "Josef van Niekerk (joe.vnie@gmail.com)",
   "license": "MIT",
@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "amcharts3": "github:amcharts/amcharts3",
-    "vue": "^2.5.11",
-    "vue-router": "^3.1.6",
-    "vuex": "^3.3.0"
+    "vue": "^2.5.11"
   },
   "browserslist": [
     "> 1%",
@@ -33,6 +31,6 @@
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^3.1.11"
+    "webpack-dev-server": "^2.9.1"
   }
 }

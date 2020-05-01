@@ -1,6 +1,6 @@
-# frontend-js-challenge
+# vue-amcharts
 
-> Suade Labs Frontend JavaScript Challenge
+> A Vue.js project
 
 ## Build Setup
 
