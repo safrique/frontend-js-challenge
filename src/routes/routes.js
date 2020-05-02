@@ -12,7 +12,7 @@ export default [
   //  The Charts
   {
     path: '/charts',
-    name: 'the-charts',
+    name: 'charts',
     component: TheCharts,
   },
 ]
