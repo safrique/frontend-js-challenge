@@ -1,8 +1,19 @@
 <template>
   <div id="pie-chart">
+    Select a category to display:
+    <el-select v-model="value" placeholder="Select">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
+
+    <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
+
     <!--    <div v-if="loading"><i class="el-icon-loading"></i> Loading ...</div>-->
     <!--    <div v-else :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>-->
-    <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
 
     <!--    <ol>-->
     <!--      <li-->
@@ -14,15 +25,6 @@
     <!--    </ol>-->
 
     <!--    <div>loading:{{ loading }}</div>-->
-
-    <el-select v-model="value" placeholder="Select">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
 
     <ol>
       <li v-for="(value, name) in getPeopleAgeSummary">
@@ -51,29 +53,20 @@
           return false
         }
 
+        this.options = this.buildPersonAttributes(this.getPeopleData)
+
         this.makePieChart(`age`)
         return true
-      }
+      },
+
+      getPersonAttributes () {
+        this.buildPersonAttributes(this.getPeopleData)
+      },
     },
 
     data () {
       return {
-        options: [{
-          value: 'Option1',
-          label: 'Option1'
-        }, {
-          value: 'Option2',
-          label: 'Option2'
-        }, {
-          value: 'Option3',
-          label: 'Option3'
-        }, {
-          value: 'Option4',
-          label: 'Option4'
-        }, {
-          value: 'Option5',
-          label: 'Option5'
-        }],
+        options: [],
         value: ''
       }
     },
@@ -96,7 +89,60 @@
           }
         }
 
-        console.log(`data:`, data)
+        // console.log(`data:`, data)
+        return data
+      },
+
+      buildPersonAttributes (people) {
+        let data = []
+        let nested = [
+          `preferences`,
+          `location`
+        ]
+        let exclude = [
+          `_id`,
+          `name`,
+          `longitude`,
+          `latitude`,
+        ]
+        let person = people[0]
+        // console.log(`--- person:`, person)
+
+        for (let item in person) {
+          let val
+          if (person.hasOwnProperty(item)) {
+            if (nested.includes(item)) {
+              // console.log(`item ${item} is nested`)
+              for (let sub_item in person[item]) {
+                if (person[item].hasOwnProperty(sub_item)) {
+                  // console.log(`sub_item ${sub_item} in person[item]=${person[item][sub_item]}`)
+                  if (!exclude.includes(sub_item)) {
+                    // console.log(`sub_item=${sub_item} included`)
+                    data.push({
+                      value: sub_item,
+                      label: sub_item
+                    })
+                    // continue
+                  }
+                  // console.log(`sub_item=${sub_item} excluded`)
+                }
+              }
+            } else {
+              // console.log(`item ${item} in person=${person[item]}`)
+              if (!exclude.includes(item)) {
+                // console.log(`item=${item} included`)
+                data.push({
+                  value: item,
+                  label: item
+                })
+                // continue
+              }
+              // console.log(`item=${item} excluded`)
+            }
+          }
+        }
+
+        // console.log(`data:`, data)
         return data
       },
 
@@ -122,7 +168,7 @@
           }
         }
 
-        console.log(`age summary:`, summary)
+        // console.log(`age summary:`, summary)
         return summary
       },
 
@@ -144,7 +190,7 @@
             data.push(new_obj)
           }
         }
-        console.log(`age data:`, data)
+        // console.log(`age data:`, data)
 
         return AmCharts.makeChart('pie-chart-render',
           {
@@ -164,7 +210,7 @@
 
     created () {
       // this.makePieChart(`age`)
-      this.displayData()
+      // this.displayData()
     },
   }
 </script>
