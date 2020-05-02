@@ -1,6 +1,6 @@
 <template>
   <div id="pie-chart">
-    <div id="pie-chart-render" style="width: 100%; height: 400px;"></div>
+    <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
 
     <!--    <ol>-->
     <!--      <li-->
@@ -10,6 +10,8 @@
     <!--        {{ person.name }}-->
     <!--      </li>-->
     <!--    </ol>-->
+
+    <div>loading:{{ loading }}</div>
 
     <ol>
       <li
@@ -33,6 +35,8 @@
       getPeopleAgeSummary () {
         return this.summariseAges(this.getPeoplePropertyData(this.people.people, `age`))
       },
+
+      loading () { return !(Object.keys(this.getPeopleData).length > 0) }
     },
 
     methods: {
@@ -82,7 +86,7 @@
         let obj = this.getPeopleAgeSummary
         console.log(`obj length=${Object.keys(obj).length}`, obj)
 
-        if (Object.keys(obj).length >0) {
+        if (Object.keys(obj).length > 0) {
           return this.buildChart(obj)
         }
 
