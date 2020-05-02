@@ -9,11 +9,14 @@ import AmCharts from 'amcharts3'
 import AmSerial from 'amcharts3/amcharts/serial'
 import AmPieChart from 'amcharts3/amcharts/pie'
 import StoreFunctions from './mixins/StoreFunctions'
+import ElementUI from 'element-ui'
+// importing ElementUI CSS in index.html as the damn url-loader for the ttf file wouldn't work
 
 window.Vue = Vue
 
 Object.defineProperty(Vue.prototype, '_', { value: _ })
 
+Vue.use(ElementUI)
 Vue.use(Vuex)
 Vue.use(VueRouter)
 const router = new VueRouter({ routes, mode: 'history', })

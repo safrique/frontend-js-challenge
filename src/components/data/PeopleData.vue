@@ -6,7 +6,7 @@
         v-for="person in getPeople"
         :key="person._id"
       >
-        {{ person.name }}
+        {{ person.name }} - aged {{ person.age }}
       </li>
     </ol>
   </div>
@@ -23,8 +23,5 @@
 </script>
 
 <style scoped>
-  li {
-    text-align: left !important;
-    margin-left: 10em !important;
-  }
+
 </style>

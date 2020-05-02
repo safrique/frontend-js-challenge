@@ -70,6 +70,11 @@
     color: #42b983;
   }
 
+  li {
+    text-align: left !important;
+    margin-left: 10em !important;
+  }
+
   .rotate {
     animation: rotation 3s infinite linear;
   }

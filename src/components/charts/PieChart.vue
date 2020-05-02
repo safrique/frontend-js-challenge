@@ -1,5 +1,7 @@
 <template>
   <div id="pie-chart">
+    <!--    <div v-if="loading"><i class="el-icon-loading"></i> Loading ...</div>-->
+    <!--    <div v-else :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>-->
     <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
 
     <!--    <ol>-->
@@ -11,12 +13,19 @@
     <!--      </li>-->
     <!--    </ol>-->
 
-    <div>loading:{{ loading }}</div>
+    <!--    <div>loading:{{ loading }}</div>-->
+
+    <el-select v-model="value" placeholder="Select">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
 
     <ol>
-      <li
-        v-for="(value, name) in getPeopleAgeSummary"
-      >
+      <li v-for="(value, name) in getPeopleAgeSummary">
         ages {{ name }} = {{ value }}
       </li>
     </ol>
@@ -33,10 +42,40 @@
       },
 
       getPeopleAgeSummary () {
-        return this.summariseAges(this.getPeoplePropertyData(this.people.people, `age`))
+        if (Object.keys(this.getPeopleData).length === 0) { return [] }
+        return this.summariseAges(this.getPeoplePropertyData(this.getPeopleData, `age`))
       },
 
-      loading () { return !(Object.keys(this.getPeopleData).length > 0) }
+      loading () {
+        if (Object.keys(this.getPeopleData).length === 0) {
+          return false
+        }
+
+        this.makePieChart(`age`)
+        return true
+      }
+    },
+
+    data () {
+      return {
+        options: [{
+          value: 'Option1',
+          label: 'Option1'
+        }, {
+          value: 'Option2',
+          label: 'Option2'
+        }, {
+          value: 'Option3',
+          label: 'Option3'
+        }, {
+          value: 'Option4',
+          label: 'Option4'
+        }, {
+          value: 'Option5',
+          label: 'Option5'
+        }],
+        value: ''
+      }
     },
 
     methods: {
@@ -57,24 +96,29 @@
           }
         }
 
-        // console.log(`data:`, data)
+        console.log(`data:`, data)
         return data
       },
 
       summariseAges (data) {
         let summary = {}
+
         for (let age in data) {
           if (data.hasOwnProperty(age)) {
-            let bracket = (parseInt((parseInt(age) / 10)) * 10).toString() + ` to `
-              + ((parseInt(((parseInt(age) / 10)) + 1) * 10) - 1).toString()
-            // console.log(`bracket:${bracket}`)
+            age = parseInt(age)
+            let from_age = (Math.trunc(age / 10) * 10).toString()
+            let to_age = ((Math.trunc(age / 10) + 1) * 10 - 1).toString()
+            let bracket = from_age + ` to ` + to_age
+            // console.log(`age=${age} -- data=${data[age]} -- bracket:${bracket} -- summary`, summary)
 
             if (summary.hasOwnProperty(bracket)) {
-              summary[bracket]++
+              summary[bracket] += data[age]
+              // console.log(`summary after updating:`, summary)
               continue
             }
 
-            summary[bracket] = 1
+            summary[bracket] = data[age]
+            // console.log(`summary after insert:`, summary)
           }
         }
 
@@ -83,51 +127,22 @@
       },
 
       makePieChart (type) {
-        let obj = this.getPeopleAgeSummary
-        console.log(`obj length=${Object.keys(obj).length}`, obj)
-
-        if (Object.keys(obj).length > 0) {
-          return this.buildChart(obj)
-        }
-
-        setTimeout(() => { return this.buildChart(this.getPeopleAgeSummary) }, 5000)
-
-        // return AmCharts.makeChart('pie-chart-render',
-        //   {
-        //     'type': 'pie',
-        //     'titleField': 'category',
-        //     'valueField': 'column-1',
-        //     'dataProvider': [
-        //       {
-        //         'category': 'category 1',
-        //         'column-1': 8
-        //       },
-        //       {
-        //         'category': 'category 2',
-        //         'column-1': 6
-        //       },
-        //       {
-        //         'category': 'category 3',
-        //         'column-1': 2
-        //       }
-        //     ]
-        //   }
-        // )
+        return this.buildChart(this.getPeopleAgeSummary)
       },
 
       buildChart (obj) {
         let data = []
-        console.log(`buildChart obj length=${Object.keys(obj).length}`, obj)
+        // console.log(`buildChart obj length=${Object.keys(obj).length}`, obj)
 
         for (let group in obj) {
-          // if (obj.hasOwnProperty(group)) {
-          let new_obj = {
-            'category': group,
-            'value': obj[group],
+          if (obj.hasOwnProperty(group)) {
+            let new_obj = {
+              'category': group,
+              'value': obj[group],
+            }
+            // console.log(`new_obj`, new_obj)
+            data.push(new_obj)
           }
-          console.log(`new_obj`, new_obj)
-          data.push(new_obj)
-          // }
         }
         console.log(`age data:`, data)
 
@@ -148,7 +163,7 @@
     },
 
     created () {
-      this.makePieChart(`age`)
+      // this.makePieChart(`age`)
       this.displayData()
     },
   }
