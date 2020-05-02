@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import people from './data/people/people'
+import people from './modules/data/people/people'
 
 Vue.use(Vuex)
 
