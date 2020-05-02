@@ -3,7 +3,7 @@
     <h2>People Data</h2>
     <ol>
       <li
-        v-for="person in getPeople.people"
+        v-for="person in getPeople"
         :key="person._id"
       >
         {{ person.name }}
@@ -17,7 +17,7 @@
     name: 'PeopleData',
 
     computed: {
-      getPeople () { return this.people }
+      getPeople () { return this.people.people }
     }
   }
 </script>
