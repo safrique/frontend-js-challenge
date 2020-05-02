@@ -1,7 +1,10 @@
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
-  computed: { ...mapGetters('people', ['getPeople']) },
+  computed: {
+    ...mapGetters('people', ['getPeople']),
+    ...mapState(['people']),
+  },
 
   methods: {
     ...mapActions('people', ['setPeople']),
