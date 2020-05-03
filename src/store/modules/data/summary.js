@@ -6,8 +6,13 @@ const summary = {
 }
 
 const mutations = {
-  SET_DATA (state, payload) { state.summary.ageData = Helpers.getPeoplePropertyData(payload.data, payload.category) },
-  SET_BRACKETS_DATA (state, payload) { state.summary.ageBracketsData = Helpers.getBracketsSummary(payload.data, payload.category) },
+  SET_DATA (state, payload) {
+    state.summary[`${payload.category}Data`] = Helpers.getPeoplePropertyData(payload.data, payload.category)
+  },
+
+  SET_BRACKETS_DATA (state, payload) {
+    state.summary[`${payload.category}BracketsData`] = Helpers.getBracketsSummary(payload.data, payload.category)
+  },
 }
 
 const getters = {
