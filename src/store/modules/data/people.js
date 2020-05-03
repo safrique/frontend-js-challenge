@@ -13,10 +13,7 @@ const getters = {
 }
 
 const actions = {
-  setPeople ({ commit, state }, people) {
-    commit('SET_PEOPLE', people)
-    return state.people
-  },
+  setPeople ({ commit, state }, people) { commit('SET_PEOPLE', people) },
 }
 
 export default {

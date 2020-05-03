@@ -6,8 +6,8 @@ const summary = {
 }
 
 const mutations = {
-  SET_AGE_DATA (state, peopleData) { state.summary.ageData = Helpers.getAgeSummary(peopleData) },
-  SET_AGE_BRACKETS_DATA (state, ageData) { state.summary.ageBracketsData = Helpers.getAgeBracketsSummary(ageData) },
+  SET_DATA (state, payload) { state.summary.ageData = Helpers.getPeoplePropertyData(payload.data, payload.category) },
+  SET_BRACKETS_DATA (state, payload) { state.summary.ageBracketsData = Helpers.getBracketsSummary(payload.data, payload.category) },
 }
 
 const getters = {
@@ -17,8 +17,8 @@ const getters = {
 }
 
 const actions = {
-  setAgeData ({ commit, state }, peopleData) { commit('SET_AGE_DATA', peopleData) },
-  setAgeBracketsData ({ commit, state }, ageData) { commit('SET_AGE_BRACKETS_DATA', ageData) },
+  setData ({ commit, state }, payload) { commit('SET_DATA', payload) },
+  setBracketsData ({ commit, state }, payload) { commit('SET_BRACKETS_DATA', payload) },
 }
 
 export default {

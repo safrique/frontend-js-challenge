@@ -1,9 +1,4 @@
 export default {
-  getAgeSummary (peopleData) {
-    // console.log(`getting age summary data from Helpers...`)
-    return this.getPeoplePropertyData(peopleData, `age`)
-  },
-
   getPeoplePropertyData (people, category) {
     let data = {}
 
@@ -25,30 +20,34 @@ export default {
     return data
   },
 
-  getAgeBracketsSummary (data) {
+  getBracketsSummary (data, category) {
     let summary = {}
 
-    for (let age in data) {
-      if (data.hasOwnProperty(age)) {
-        age = parseInt(age)
-        let from_age = (Math.trunc(age / 10) * 10).toString()
-        let to_age = ((Math.trunc(age / 10) + 1) * 10 - 1).toString()
-        let bracket = from_age + ` to ` + to_age
-        // console.log(`age=${age} -- data=${data[age]} -- bracket:${bracket} -- summary`, summary)
+    for (let item in data) {
+      if (data.hasOwnProperty(item)) {
+        let bracket = (category === `age` ? this.getNumberItemBracket(item) : item)
+        // console.log(`item=${item} -- data=${data[item]} -- bracket:${bracket} -- summary`, summary)
 
         if (summary.hasOwnProperty(bracket)) {
-          summary[bracket] += data[age]
+          summary[bracket] += data[item]
           // console.log(`summary after updating:`, summary)
           continue
         }
 
-        summary[bracket] = data[age]
+        summary[bracket] = data[item]
         // console.log(`summary after insert:`, summary)
       }
     }
 
-    // console.log(`age summary:`, summary)
+    // console.log(`item summary:`, summary)
     return summary
+  },
+
+  getNumberItemBracket (item) {
+    item = parseInt(item)
+    let from_age = (Math.trunc(item / 10) * 10).toString()
+    let to_age = ((Math.trunc(item / 10) + 1) * 10 - 1).toString()
+    return from_age + ` to ` + to_age
   },
 
   buildPersonAttributes (people) {

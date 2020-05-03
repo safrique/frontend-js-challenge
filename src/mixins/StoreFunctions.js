@@ -11,15 +11,13 @@ export default {
   methods: {
     ...mapGetters('people', ['getPeople']),
     ...mapActions('people', ['setPeople']),
-    // ...mapGetters('summary', ['getAgeData', 'getAgeBracketsData']),
-    ...mapActions('summary', ['setAgeData', 'setAgeBracketsData']),
+    ...mapActions('summary', ['setData', 'setBracketsData',]),
 
     loadPeopleData () {
       api_data.getData().then(response => { this.setPeople(response.data) })
         .then(() => {
-          this.setAgeData(this.getPeople())
-            // .then(this.setAgeBracketsData(this.getAgeData()))
-            .then(this.setAgeBracketsData(this.getAgeData))
+          this.setData({ data: this.getPeople(), category: `age` })
+            .then(this.setBracketsData({ data: this.getAgeData, category: `age` }))
         })
     }
   },
