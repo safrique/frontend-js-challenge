@@ -33,7 +33,12 @@ new Vue({
   AmCharts,
   AmSerial,
   AmPieChart,
+
   mixins: [StoreFunctions],
-  created () {this.loadPeopleData()},
+
+  created () {
+    this.loadPeopleData()
+  },
+
   render: h => h(App)
 })

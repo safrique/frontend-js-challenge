@@ -1,5 +1,5 @@
 <template>
-  <div id="pie-chart">
+  <div id="pie-chart" :key="componentKey">
     Select a category to display:
     <el-select v-model="value" placeholder="Select">
       <el-option
@@ -15,22 +15,15 @@
     <!--    <div v-if="loading"><i class="el-icon-loading"></i> Loading ...</div>-->
     <!--    <div v-else :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>-->
 
+    <!--    <div>loading:{{ loading }}</div>-->
+
     <!--    <ol>-->
-    <!--      <li-->
-    <!--        v-for="person in getPeopleData"-->
-    <!--        :key="person._id"-->
-    <!--      >-->
-    <!--        {{ person.name }}-->
+    <!--      <li v-for="(value, name) in getPeopleAgeSummary">-->
+    <!--        ages {{ name }} = {{ value }}-->
     <!--      </li>-->
     <!--    </ol>-->
 
-    <!--    <div>loading:{{ loading }}</div>-->
-
-    <ol>
-      <li v-for="(value, name) in getPeopleAgeSummary">
-        ages {{ name }} = {{ value }}
-      </li>
-    </ol>
+    <!--    <button @click="getPeopleAgeSummary">test</button>-->
   </div>
 </template>
 
@@ -40,57 +33,54 @@
 
     computed: {
       getPeopleData () {
-        return this.people.people
-      },
-
-      getPeopleAgeSummary () {
-        if (Object.keys(this.getPeopleData).length === 0) { return [] }
-        return this.summariseAges(this.getPeoplePropertyData(this.getPeopleData, `age`))
+        return this.getPeople()
       },
 
       loading () {
-        if (Object.keys(this.getPeopleData).length === 0) {
-          return false
+        console.log(`check loading -- componentKey=${this.componentKey}...`)
+
+        let obj = this.getPeopleData
+        console.log(`getPeopleData`, obj)
+
+        if (Object.keys(obj).length > 0) {
+          console.log(`making dropdown...`, obj)
+          this.options = this.buildPersonAttributes(this.getPeopleData)
         }
 
-        this.options = this.buildPersonAttributes(this.getPeopleData)
+        if (!this.checkAgeBracketsDataExists()) {
+          console.log(`waiting...`)
+          setTimeout(() => {
+            if (this.checkAgeBracketsDataExists()) { return false }
+          }, 500)
+        }
 
-        this.makePieChart(`age`)
-        return true
+        this.componentKey++
+        console.log(`componentKey=${this.componentKey} -- still loading...`)
+        return !this.checkAgeBracketsDataExists()
       },
 
-      getPersonAttributes () {
-        this.buildPersonAttributes(this.getPeopleData)
-      },
+      // getPersonAttributes () {
+      //   this.buildPersonAttributes(this.getPeopleData)
+      // },
     },
 
     data () {
       return {
         options: [],
-        value: ''
+        value: '',
+        componentKey: 0,
       }
     },
 
     methods: {
-      getPeoplePropertyData (people, category) {
-        let data = {}
-
-        for (let person in people) {
-          if (people.hasOwnProperty(person)) {
-            // console.log(`person:${person} -- data`, people[person])
-            // console.log(`${category}:${people[person][category]} -- type=${typeof people[person][category]}`)
-
-            if (data.hasOwnProperty(people[person][category])) {
-              data[people[person][category]]++
-              continue
-            }
-
-            data[people[person][category]] = 1
-          }
+      checkAgeBracketsDataExists () {
+        console.log(`checking it exists...`)
+        if (typeof this.summary.summary.ageBracketsData !== `undefined`) {
+          console.log(`making pie chart...`)
+          this.makePieChart(this.summary.summary.ageBracketsData, `age`)
+          return true
         }
-
-        // console.log(`data:`, data)
-        return data
+        return false
       },
 
       buildPersonAttributes (people) {
@@ -146,39 +136,21 @@
         return data
       },
 
-      summariseAges (data) {
-        let summary = {}
-
-        for (let age in data) {
-          if (data.hasOwnProperty(age)) {
-            age = parseInt(age)
-            let from_age = (Math.trunc(age / 10) * 10).toString()
-            let to_age = ((Math.trunc(age / 10) + 1) * 10 - 1).toString()
-            let bracket = from_age + ` to ` + to_age
-            // console.log(`age=${age} -- data=${data[age]} -- bracket:${bracket} -- summary`, summary)
-
-            if (summary.hasOwnProperty(bracket)) {
-              summary[bracket] += data[age]
-              // console.log(`summary after updating:`, summary)
-              continue
-            }
-
-            summary[bracket] = data[age]
-            // console.log(`summary after insert:`, summary)
-          }
+      makePieChart (data, type) {
+        switch (type) {
+          case `eyeColor`:
+          case `gender`:
+          case `pet`:
+          case `fruit`:
+            return false
+          default:
+            return this.buildChart(data)
         }
-
-        // console.log(`age summary:`, summary)
-        return summary
-      },
-
-      makePieChart (type) {
-        return this.buildChart(this.getPeopleAgeSummary)
       },
 
       buildChart (obj) {
         let data = []
-        // console.log(`buildChart obj length=${Object.keys(obj).length}`, obj)
+        console.log(`buildChart obj length=${Object.keys(obj).length}`, obj)
 
         for (let group in obj) {
           if (obj.hasOwnProperty(group)) {
@@ -204,8 +176,55 @@
 
       displayData () {
         // console.log(`pie chart data`, this.getPeopleData)
-        console.log(`age data`, this.getPeopleAgeSummary)
+        // console.log(`age data`, this.getPeopleAgeSummary)
       },
+
+      // getPeoplePropertyData (people, category) {
+      //   let data = {}
+      //
+      //   for (let person in people) {
+      //     if (people.hasOwnProperty(person)) {
+      //       // console.log(`person:${person} -- data`, people[person])
+      //       // console.log(`${category}:${people[person][category]} -- type=${typeof people[person][category]}`)
+      //
+      //       if (data.hasOwnProperty(people[person][category])) {
+      //         data[people[person][category]]++
+      //         continue
+      //       }
+      //
+      //       data[people[person][category]] = 1
+      //     }
+      //   }
+      //
+      //   // console.log(`data:`, data)
+      //   return data
+      // },
+      //
+      // summariseAges (data) {
+      //   let summary = {}
+      //
+      //   for (let age in data) {
+      //     if (data.hasOwnProperty(age)) {
+      //       age = parseInt(age)
+      //       let from_age = (Math.trunc(age / 10) * 10).toString()
+      //       let to_age = ((Math.trunc(age / 10) + 1) * 10 - 1).toString()
+      //       let bracket = from_age + ` to ` + to_age
+      //       // console.log(`age=${age} -- data=${data[age]} -- bracket:${bracket} -- summary`, summary)
+      //
+      //       if (summary.hasOwnProperty(bracket)) {
+      //         summary[bracket] += data[age]
+      //         // console.log(`summary after updating:`, summary)
+      //         continue
+      //       }
+      //
+      //       summary[bracket] = data[age]
+      //       // console.log(`summary after insert:`, summary)
+      //     }
+      //   }
+      //
+      //   // console.log(`age summary:`, summary)
+      //   return summary
+      // },
     },
 
     created () {
