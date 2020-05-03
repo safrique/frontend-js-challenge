@@ -53,8 +53,15 @@
 
     methods: {
       checkDataBuildChart () {
+        let category = `${this.value}BracketsData`
         console.log(`category=${this.value} -- checking it exists...`)
-        let data = this.getChartData()
+        let data = this.summary.summary[category]
+
+        if (this.value !== `age` && typeof data === `undefined`) {
+          this.setData({ data: this.getPeople(), category: this.value })
+            .then(this.setBracketsData({ data: this.summary.summary[`${this.value}Data`], category: this.value })
+              .then(() => { data = this.summary.summary[category] }))
+        }
 
         if (typeof data !== `undefined`) {
           this.buildPieChart(data)
@@ -63,20 +70,13 @@
         return false
       },
 
-      getChartData () {
-        switch (this.value) {
-          case `eyeColor`:
-          case `gender`:
-          case `pet`:
-          case `fruit`:
-            return false
-          default:
-            return this.summary.summary.ageBracketsData
-        }
+      buildPieChart (input) {
+        console.log(`building the ${this.value} chart...`)
+        this.setChartData(input)
+        if (this.chartData.length) { this.renderChart() }
       },
 
-      buildPieChart (input) {
-        // console.log(`building the ${this.value} chart...`)
+      setChartData (input) {
         let display_data = []
 
         for (let group in input) {
@@ -89,25 +89,24 @@
             display_data.push(new_obj)
           }
         }
-        // console.log(`chart data:`, input)
 
         this.chartData = display_data
-        // console.log(`chartData:`, this.chartData)
+        console.log(`chartData:`, this.chartData)
+      },
 
-        if (this.chartData.length) {
-          setTimeout(() => {
-            // console.log(`building chart now...`)
-            AmCharts.makeChart('pie-chart-render',
-              {
-                'type': 'pie',
-                'titleField': 'category',
-                'valueField': 'value',
-                'dataProvider': this.chartData
-              }
-            )
-            // console.log(`chart built...`)
-          }, 500)
-        }
+      renderChart () {
+        setTimeout(() => {
+          console.log(`building chart now...`)
+          AmCharts.makeChart('pie-chart-render',
+            {
+              'type': 'pie',
+              'titleField': 'category',
+              'valueField': 'value',
+              'dataProvider': this.chartData
+            }
+          )
+          console.log(`chart built...`)
+        }, 500)
       },
 
       displayData () {
