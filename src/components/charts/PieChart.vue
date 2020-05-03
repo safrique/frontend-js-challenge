@@ -1,7 +1,7 @@
 <template>
   <div id="pie-chart" :key="componentKey">
     Select a category to display:
-    <el-select v-model="value" placeholder="Select">
+    <el-select v-model="value" placeholder="Select" @change="checkDataBuildChart()">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -11,23 +11,12 @@
     </el-select>
 
     <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
-
-    <!--    <div v-if="loading"><i class="el-icon-loading"></i> Loading ...</div>-->
-    <!--    <div v-else :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>-->
-
-    <!--    <div>loading:{{ loading }}</div>-->
-
-    <!--    <ol>-->
-    <!--      <li v-for="(value, name) in getPeopleAgeSummary">-->
-    <!--        ages {{ name }} = {{ value }}-->
-    <!--      </li>-->
-    <!--    </ol>-->
-
-    <!--    <button @click="getPeopleAgeSummary">test</button>-->
   </div>
 </template>
 
 <script>
+  import Helpers from '../../mixins/Helpers'
+
   export default {
     name: 'PieChart',
 
@@ -37,141 +26,88 @@
       },
 
       loading () {
-        console.log(`check loading -- componentKey=${this.componentKey}...`)
-
-        let obj = this.getPeopleData
-        console.log(`getPeopleData`, obj)
-
-        if (Object.keys(obj).length > 0) {
-          console.log(`making dropdown...`, obj)
-          this.options = this.buildPersonAttributes(this.getPeopleData)
+        // console.log(`check loading -- componentKey=${this.componentKey}...`)
+        if (Object.keys(this.getPeopleData).length > 0) {
+          this.options = Helpers.buildPersonAttributes(this.getPeopleData)
         }
 
-        if (!this.checkAgeBracketsDataExists()) {
-          console.log(`waiting...`)
+        if (!this.checkDataBuildChart()) {
           setTimeout(() => {
-            if (this.checkAgeBracketsDataExists()) { return false }
+            if (this.checkDataBuildChart()) { return false }
           }, 500)
         }
 
         this.componentKey++
-        console.log(`componentKey=${this.componentKey} -- still loading...`)
-        return !this.checkAgeBracketsDataExists()
+        return true
       },
-
-      // getPersonAttributes () {
-      //   this.buildPersonAttributes(this.getPeopleData)
-      // },
     },
 
     data () {
       return {
         options: [],
-        value: '',
+        value: `age`,
         componentKey: 0,
+        chartData: [],
       }
     },
 
     methods: {
-      checkAgeBracketsDataExists () {
-        console.log(`checking it exists...`)
-        if (typeof this.summary.summary.ageBracketsData !== `undefined`) {
-          console.log(`making pie chart...`)
-          this.makePieChart(this.summary.summary.ageBracketsData, `age`)
+      checkDataBuildChart () {
+        console.log(`category=${this.value} -- checking it exists...`)
+        let data = this.getChartData()
+
+        if (typeof data !== `undefined`) {
+          this.buildPieChart(data)
           return true
         }
         return false
       },
 
-      buildPersonAttributes (people) {
-        let data = []
-        let nested = [
-          `preferences`,
-          `location`
-        ]
-        let exclude = [
-          `_id`,
-          `name`,
-          `longitude`,
-          `latitude`,
-        ]
-        let person = people[0]
-        // console.log(`--- person:`, person)
-
-        for (let item in person) {
-          let val
-          if (person.hasOwnProperty(item)) {
-            if (nested.includes(item)) {
-              // console.log(`item ${item} is nested`)
-              for (let sub_item in person[item]) {
-                if (person[item].hasOwnProperty(sub_item)) {
-                  // console.log(`sub_item ${sub_item} in person[item]=${person[item][sub_item]}`)
-                  if (!exclude.includes(sub_item)) {
-                    // console.log(`sub_item=${sub_item} included`)
-                    data.push({
-                      value: sub_item,
-                      label: sub_item
-                    })
-                    // continue
-                  }
-                  // console.log(`sub_item=${sub_item} excluded`)
-                }
-              }
-            } else {
-              // console.log(`item ${item} in person=${person[item]}`)
-              if (!exclude.includes(item)) {
-                // console.log(`item=${item} included`)
-                data.push({
-                  value: item,
-                  label: item
-                })
-                // continue
-              }
-              // console.log(`item=${item} excluded`)
-            }
-          }
-        }
-
-        // console.log(`data:`, data)
-        return data
-      },
-
-      makePieChart (data, type) {
-        switch (type) {
+      getChartData () {
+        switch (this.value) {
           case `eyeColor`:
           case `gender`:
           case `pet`:
           case `fruit`:
             return false
           default:
-            return this.buildChart(data)
+            return this.summary.summary.ageBracketsData
         }
       },
 
-      buildChart (obj) {
-        let data = []
-        console.log(`buildChart obj length=${Object.keys(obj).length}`, obj)
+      buildPieChart (input) {
+        // console.log(`building the ${this.value} chart...`)
+        let display_data = []
 
-        for (let group in obj) {
-          if (obj.hasOwnProperty(group)) {
+        for (let group in input) {
+          if (input.hasOwnProperty(group)) {
             let new_obj = {
               'category': group,
-              'value': obj[group],
+              'value': input[group],
             }
             // console.log(`new_obj`, new_obj)
-            data.push(new_obj)
+            display_data.push(new_obj)
           }
         }
-        // console.log(`age data:`, data)
+        // console.log(`chart data:`, input)
 
-        return AmCharts.makeChart('pie-chart-render',
-          {
-            'type': 'pie',
-            'titleField': 'category',
-            'valueField': 'value',
-            'dataProvider': data
-          }
-        )
+        this.chartData = display_data
+        // console.log(`chartData:`, this.chartData)
+
+        if (this.chartData.length) {
+          setTimeout(() => {
+            // console.log(`building chart now...`)
+            AmCharts.makeChart('pie-chart-render',
+              {
+                'type': 'pie',
+                'titleField': 'category',
+                'valueField': 'value',
+                'dataProvider': this.chartData
+              }
+            )
+            // console.log(`chart built...`)
+          }, 500)
+        }
       },
 
       displayData () {
