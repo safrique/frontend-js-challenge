@@ -66,6 +66,7 @@
 <style scoped>
   #the-tabs {
     margin-top: 2em;
+    margin-bottom: 36px !important;
     color: #2c3e50 !important;
   }
 </style>
