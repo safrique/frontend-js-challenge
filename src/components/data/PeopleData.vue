@@ -1,6 +1,6 @@
 <template>
   <div class="people-data">
-    <h2>People Data</h2>
+    <h1>People Data</h1>
     <ol>
       <li
         v-for="person in getPeople"
