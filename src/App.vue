@@ -70,6 +70,11 @@
     color: #42b983;
   }
 
+  li {
+    text-align: left !important;
+    margin-left: 10em !important;
+  }
+
   .rotate {
     animation: rotation 3s infinite linear;
   }
@@ -84,8 +89,7 @@
   }
 
   .pulse {
-    animation: pulse 3s infinite;
-    /*display: table;*/
+    animation: pulse 2s infinite;
     margin: 50px auto 0;
     animation-direction: alternate;
     -webkit-animation-name: pulse;
@@ -97,7 +101,7 @@
       -webkit-transform: scale(1);
     }
     50% {
-      -webkit-transform: scale(1.3);
+      -webkit-transform: scale(1.5);
     }
     100% {
       -webkit-transform: scale(1);
