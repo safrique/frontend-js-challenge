@@ -1,65 +1,42 @@
 <template>
   <div id="app">
-    <img class="spin" id="suade-img" src="./assets/img/suade.png">
-    <h1>{{ msg }}</h1>
-    <h3>{{ purpose }}</h3>
-    <span>
-      {{ created_by }}
-      <a href="http://safrique.uk" target="_blank">{{ author }}
-        <img class="pulse" src="./assets/img/sfq-full.png" height="13"/>
-      </a>
-    </span>
-    <span>
-      See this project on
-      <a href="http://github.com/safrique/frontend-js-challenge" target="_blank">
-        GitHub <img class="rotate" src="./assets/img/GitHub-Mark-32px.png" height="13"/>
-      </a>
-    </span>
-
-    <hr>
-    <TheCharts></TheCharts>
-
-    <hr>
-    <PeopleData></PeopleData>
-
-    <hr>
-    <VueLinks></VueLinks>
+    <SuadeLogo></SuadeLogo>
+    <ProjectDetails></ProjectDetails>
+    <AuthorDetails></AuthorDetails>
+    <TheTabs></TheTabs>
   </div>
 </template>
 
 <script>
-  import TheCharts from './components/charts/TheCharts'
-  import PeopleData from './components/data/PeopleData'
-  import VueLinks from './components/vue-eco/VueLinks'
+  import AuthorDetails from './components/layout/AuthorDetails'
+  import TheTabs from './components/layout/TheTabs'
+  import ProjectDetails from './components/layout/ProjectDetails'
+  import SuadeLogo from './components/layout/SuadeLogo'
 
   export default {
     name: 'app',
 
-    data () {
-      return {
-        msg: 'Data Visualisation Dashboard',
-        purpose: `Frontend JavaScript Challenge`,
-        created_by: `Created by `,
-        author: `Josef van Niekerk`,
-      }
-    },
-
     components: {
-      TheCharts,
-      PeopleData,
-      VueLinks,
+      AuthorDetails,
+      TheTabs,
+      ProjectDetails,
+      SuadeLogo,
     },
   }
 </script>
 
 <style lang="scss">
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+    color: white;
+    margin-top: 36px;
+  }
+
+  body {
+    background-image: url('./assets/img/suade-bkg.png');
   }
 
   h1, h2 {
@@ -132,8 +109,6 @@
   }
 
   #suade-img {
-    /*padding: 3px;*/
     border: 3px solid #e42c2a;
-    /*background-color: darkblue;*/
   }
 </style>

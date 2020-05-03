@@ -1,10 +1,12 @@
 import PeopleData from '../components/data/PeopleData'
 import TheCharts from '../components/charts/TheCharts'
+import MapChart  from '../components/charts/MapChart'
+import TheInstructions from '../components/usability/TheInstructions'
 
 export default [
   //  People Data - data table
   {
-    path: '/people',
+    path: '/',
     name: 'people-data',
     component: PeopleData,
   },
@@ -14,5 +16,19 @@ export default [
     path: '/charts',
     name: 'charts',
     component: TheCharts,
+  },
+
+  //  The Map
+  {
+    path: '/map',
+    name: 'map',
+    component: MapChart,
+  },
+
+  //  App Instructions
+  {
+    path: '/instructions',
+    name: 'instructions',
+    component: TheInstructions,
   },
 ]
