@@ -3,53 +3,58 @@
     <h1>People Data</h1>
 
     <el-table
-      :data="tableData"
+      :data="getPeopleData"
       style="width: 100%">
+            <el-table-column
+              prop="_id"
+              label="ID"
+              width="250">
+            </el-table-column>
       <el-table-column
-        prop="date"
-        label="Date"
-        width="150">
+        prop="name"
+        label="Name"
+        width="200">
       </el-table-column>
-      <el-table-column label="Delivery Info">
+      <el-table-column
+        prop="age"
+        label="Age"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        prop="eyeColor"
+        label="Eye Color"
+        width="90">
+      </el-table-column>
+      <el-table-column
+        prop="gender"
+        label="Gender"
+        width="75">
+      </el-table-column>
+      <el-table-column label="Preferences">
         <el-table-column
-          prop="name"
-          label="Name"
+          prop="preferences[pet]"
+          label="Pet"
           width="120">
         </el-table-column>
-        <el-table-column label="Address Info">
-          <el-table-column
-            prop="state"
-            label="State"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="city"
-            label="City"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="Address"
-            width="300">
-          </el-table-column>
-          <el-table-column
-            prop="zip"
-            label="Zip"
-            width="120">
-          </el-table-column>
+        <el-table-column
+          prop="preferences[fruit]"
+          label="Fruit"
+          width="120">
+        </el-table-column>
+      </el-table-column>
+      <el-table-column label="Location">
+        <el-table-column
+          prop="location[longitude]"
+          label="Longitude"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="location[latitude]"
+          label="Latitude"
+          width="120">
         </el-table-column>
       </el-table-column>
     </el-table>
-
-
-    <ol>
-      <li
-        v-for="person in getPeopleData"
-        :key="person._id"
-      >
-        {{ person.name }} - aged {{ person.age }}
-      </li>
-    </ol>
   </div>
 </template>
 
@@ -58,62 +63,10 @@
     name: 'PeopleData',
 
     computed: {
-      // getPeopleData () { return this.people.people }
-      getPeopleData () { return this.getPeople() }
-    },
-
-    data () {
-      return {
-        tableData: [{
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-04',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-01',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-08',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-06',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-07',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }]
+      getPeopleData () {
+        let data = this.getPeople()
+        console.log(`getPeopleData:`, data)
+        return data
       }
     },
   }
