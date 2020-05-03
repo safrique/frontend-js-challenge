@@ -1,27 +1,52 @@
 export default {
   getPeoplePropertyData (people, category) {
     let data = {}
+    // console.log(`getPeoplePropertyData people:`, people)
+    let location = [`longitude`, `latitude`]
+    let preferences = [`pet`, `fruit`]
+    let nested = []
+    let nested_category
+
+    if (location.includes(category)) {
+      for (let i = 0, j = location.length; i < j; i++) { nested.push(location[i]) }
+      nested_category = `location`
+    } else if (preferences.includes(category)) {
+      for (let i = 0, j = preferences.length; i < j; i++) { nested.push(preferences[i]) }
+      nested_category = `preferences`
+    }
+    // console.log(`nested:`, nested)
 
     for (let person in people) {
       if (people.hasOwnProperty(person)) {
         // console.log(`person:${person} -- data`, people[person])
         // console.log(`${category}:${people[person][category]} -- type=${typeof people[person][category]}`)
 
-        if (data.hasOwnProperty(people[person][category])) {
-          data[people[person][category]]++
-          continue
-        }
+        if (nested.includes(category)) {
+          // console.log(`person:${person} -- people[person][nested_category]`, people[person][nested_category])
+          if (data.hasOwnProperty(people[person][nested_category][category])) {
+            data[people[person][nested_category][category]]++
+            continue
+          }
 
-        data[people[person][category]] = 1
+          data[people[person][nested_category][category]] = 1
+        } else {
+          if (data.hasOwnProperty(people[person][category])) {
+            data[people[person][category]]++
+            continue
+          }
+
+          data[people[person][category]] = 1
+        }
       }
     }
 
-    // console.log(`data:`, data)
+    // console.log(`getPeoplePropertyData data:`, data)
     return data
   },
 
   getBracketsSummary (data, category) {
     let summary = {}
+    // console.log(`getBracketsSummary data:`, data)
 
     for (let item in data) {
       if (data.hasOwnProperty(item)) {
