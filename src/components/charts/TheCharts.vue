@@ -1,8 +1,8 @@
 <template>
   <div id="the-chart">
     <h1>Charts</h1>
-    <PieChart ref="pie"></PieChart>
-    <BarChart></BarChart>
+    <PieChart ref="pie" @renderedChart="emitChartBuiltEvent"></PieChart>
+    <BarChart ref="bar"></BarChart>
   </div>
 </template>
 
@@ -26,6 +26,21 @@
           // console.log(`updating PieChart data...`)
           this.$refs.pie.checkDataBuildChart()
         }
+
+        this.updateBarChart()
+      },
+
+      updateBarChart (type) {
+        // console.log(`updating ${type} bar chart from TheCharts...`)
+        if (this.$refs.bar) {
+          // console.log(`updating PieChart data...`)
+          this.$refs.bar.checkDataBuildChart(type)
+        }
+      },
+
+      emitChartBuiltEvent (type) {
+        // console.log(`TheCharts refs:`, this.$refs)
+        this.updateBarChart(type)
       },
     },
   }

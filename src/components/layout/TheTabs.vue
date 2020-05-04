@@ -72,20 +72,14 @@
     methods: {
       emitUpdatedEvent () {
         // console.log(`emitting updated-summary-data event from parent TheTabs...`)
-        this.$emit(`updatedSummaryData`)
+        // TODO: Check if this $emit is needed...
+        // this.$emit(`updatedSummaryData`)
         // console.log(`TheTabs refs:`, this.$refs)
         if (this.$refs.charts) {
           this.$refs.charts.updateData()
         } // else { console.log(`this.$refs.charts not yet registered...`) }
         // console.log(`emitted updated-summary-data event from parent TheTabs...`)
       },
-    },
-
-    created () {
-      // this.$on(`updatedSummaryData`, () => {
-      //   this.$emit(`updatedSummaryData`)
-      //   console.log(`emitted updated-summary-data event from parent TheTabs...`)
-      // })
     },
   }
 </script>

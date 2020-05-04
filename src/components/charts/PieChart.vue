@@ -124,6 +124,8 @@
           )
           // console.log(`chart built...`)
         }, 500)
+
+        this.$emit(`renderedChart`, this.value)
       },
 
       displayData () {

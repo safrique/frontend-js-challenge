@@ -8,31 +8,69 @@
   export default {
     name: 'BarChart',
 
-    mounted () {
-      setTimeout(() => {
-        AmCharts.makeChart('bar-chart-render',
-          {
-            'type': 'serial',
-            'categoryField': 'type',
-            'chartCursor': {},
-            'graphs': [
-              {
-                'type': 'column',
-                'title': 'Pizza types',
-                'valueField': 'sold',
-                'fillAlphas': 0.8
-              }
-            ],
+    data () {
+      return {
+        chartData: [],
+        chartType: `age`,
+        dataType: `${this.chartType}Data`
+      }
+    },
 
-            'dataProvider': [
-              { 'type': 'Margherita', 'sold': 120 },
-              { 'type': 'Funghi', 'sold': 82 },
-              { 'type': 'Capricciosa', 'sold': 78 },
-              { 'type': 'Quattro Stagioni', 'sold': 71 }
-            ]
+    methods: {
+      checkDataBuildChart (type) {
+        // console.log(`building ${type} bar chart...`)
+        this.chartType = type
+        this.dataType = `${this.chartType}Data`
+
+        setTimeout(() => {
+          this.setChartData()
+          this.renderBarChart()
+        }, 500)
+      },
+
+      setChartData () {
+        // let data = this.summary.summary[this.dataType]
+        // // console.log(`bar chart data...`, data)
+        // this.chartData = this.buildChartData(data)
+        this.chartData = this.buildChartData(this.summary.summary[this.dataType])
+      },
+
+      buildChartData (data) {
+        // console.log(`building bar chart data...`, data)
+        let new_data = []
+
+        for (let item in data) {
+          if (data.hasOwnProperty(item)) {
+            // console.log(`item=${item} -- data[key]...`, data[item])
+            new_data.push({ 'type': item, 'value': data[item] })
           }
-        )
-      }, 500)
+        }
+
+        // console.log(`new_data...`, new_data)
+        return new_data
+      },
+
+      renderBarChart () {
+        setTimeout(() => {
+          AmCharts.makeChart('bar-chart-render',
+            {
+              'type': 'serial',
+              'categoryField': 'type',
+              'chartCursor': {},
+              'graphs': [
+                {
+                  'type': 'column',
+                  'title': `People ${this.chartType.replace(`Color`, ` colour`)}s`,
+                  'valueField': 'value',
+                  'fillAlphas': 0.8
+                }
+              ],
+
+              'dataProvider': this.chartData
+            }
+          )
+        }, 500)
+      },
     },
   }
 </script>
