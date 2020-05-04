@@ -69,11 +69,11 @@ export default {
     },
 
     setNewCategoryData (category, value) {
-      // console.log(`setting ${value} data for category=${category}...`)
+      console.log(`setting ${value} data for category=${category}...`)
       this.setData({ data: this.getPeople(), category: value })
         .then(this.setBracketsData({ data: this.summary.summary[`${value}Data`], category: value })
           .then(() => {
-            // console.log(`this.summary.summary[${category}]`, this.summary.summary[category])
+            console.log(`this.summary.summary[${category}]`, this.summary.summary[category])
             return this.summary.summary[category]
           }))
     },

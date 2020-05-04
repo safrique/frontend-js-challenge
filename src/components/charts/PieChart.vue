@@ -62,15 +62,29 @@
         let data = this.summary.summary[category]
 
         if (this.value !== `age` && typeof data === `undefined`) {
+          // console.log(`chart data undefined - setting it again...`)
           data = this.setNewCategoryData(category, this.value)
+          // console.log(`reset chart data...`, data)
         }
+        // console.log(`chart data...`, data)
 
-        // console.log(`checking data again...`)
-        if (typeof data !== `undefined`) {
-          this.buildPieChart(data)
-          return true
-        }
-        return false
+        // console.log(`waiting before carrying on...`)
+        setTimeout(() => {
+          // console.log(`waited - trying again...`)
+          if (typeof data === `undefined`) {
+            // console.log(`data still undefined - going to trying again...`)
+            data = this.summary.summary[category]
+            // console.log(`tried again...`, data)
+          }
+
+          // console.log(`checking data again...`)
+          if (typeof data !== `undefined`) {
+            this.buildPieChart(data)
+            return true
+          }
+          // console.log(`data still undefined - exiting...`)
+          return false
+        }, 500)
       },
 
       buildPieChart (input) {
