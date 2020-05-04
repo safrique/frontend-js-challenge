@@ -7,17 +7,16 @@
       style="width: 100%"
       max-height="500">
       <el-table-column
-        prop="_id"
-        label="ID"
-        width="250"
-        fixed>
-      </el-table-column>
-      <el-table-column
         prop="name"
         label="Name"
         width="200"
         sortable
         fixed>
+      </el-table-column>
+      <el-table-column
+        prop="_id"
+        label="ID"
+        width="250">
       </el-table-column>
       <el-table-column
         prop="age"
@@ -62,12 +61,23 @@
         </el-table-column>
       </el-table-column>
       <el-table-column
-        align="right">
-        <template slot="header" slot-scope="scope">
+        align="center">
+        <template
+          slot="header"
+          slot-scope="scope">
           <el-input
             v-model="search"
             size="mini"
             placeholder="Type a name to search"/>
+          <el-button
+            type="primary"
+            round
+            plain
+            @click="addPerson"
+            icon="el-icon-circle-plus-outline"
+            style="padding: 0.5em; margin-top: 1em;">
+            Add Person
+          </el-button>
         </template>
         <template slot-scope="scope">
           <el-button
@@ -130,7 +140,6 @@
         search: ``,
         dialogFormVisible: false,
         formLabelWidth: '100px',
-        // index: '',
 
         form: {
           name: '',
@@ -156,58 +165,17 @@
 
     methods: {
       handleEdit (index, row) {
-        // this.index = index
         // console.log(index, row)
         this.updateForm(row)
         this.dialogFormVisible = true
-        // this.index = ''
       },
 
       handleDelete (index, row) {
         this.confirmChange(true, row, index)
-
-        // console.log(index, row)
-        // this.$confirm(`This will permanently delete the person's details. Continue?`,
-        //   'Warning', {
-        //     confirmButtonText: 'OK',
-        //     cancelButtonText: 'Cancel',
-        //     type: 'warning'
-        //   })
-        //   .then(() => {
-        //     this.getPeopleData.splice(index, 1)
-        //     // the splice above should take care of deleting the person from the store, but let's make sure...
-        //     this.DeleteStoreData(row)
-        //     this.$emit(`updatedSummaryData`)
-        //     this.$message({ type: 'success', message: 'Delete completed' })
-        //   })
-        //   .catch(() => {
-        //     this.$message({ type: 'info', message: 'Delete canceled' })
-        //   })
       },
 
       confirmEdit () {
         this.confirmChange()
-
-        // console.log(`updated form data for index=${this.index}...`)
-        // console.log(`index=${this.index} -- this.form:`, this.form)
-        // this.$confirm(`This will permanently edit the person's details. Continue?`,
-        //   'Warning', {
-        //     confirmButtonText: 'OK',
-        //     cancelButtonText: 'Cancel',
-        //     type: 'warning'
-        //   })
-        //   .then(() => {
-        //     this.editStoreData(this.form)
-        //     // console.log(`emitting updatedSummaryData event from child PeopleData...`)
-        //     this.$emit(`updatedSummaryData`)
-        //     // console.log(`emitted updatedSummaryData event from child PeopleData...`)
-        //     // console.log(`getPeopleData:`, this.getPeopleData)
-        //     this.$message({ type: 'success', message: 'Edit completed' })
-        //   })
-        //   .catch(() => {
-        //     this.$message({ type: 'info', message: 'Edit canceled' })
-        //   })
-        //   .finally(this.dialogFormVisible = false)
       },
 
       confirmChange (delete_person = false, person = null, index = null) {
@@ -242,6 +210,11 @@
 
       updateForm (row) {
         this.form = row
+      },
+
+      addPerson () {
+        console.log(`add button clicked...`)
+        this.$message({ type: 'success', message: `Person added` })
       },
     }
     ,
