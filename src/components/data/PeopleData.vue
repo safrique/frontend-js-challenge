@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column
         prop="eyeColor"
-        label="Eye Color"
+        label="Eye Colour"
         width="90"
         sortable>
       </el-table-column>
@@ -82,6 +82,42 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog title="Shipping address" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="ID" :label-width="formLabelWidth">
+          <el-input v-model="form.id" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Name" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Age" :label-width="formLabelWidth">
+          <el-input v-model="form.age" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Eye Colour" :label-width="formLabelWidth">
+          <el-input v-model="form.eyeColor" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Gender" :label-width="formLabelWidth">
+          <el-input v-model="form.gender" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Pet" :label-width="formLabelWidth">
+          <el-input v-model="form.pet" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Fruit" :label-width="formLabelWidth">
+          <el-input v-model="form.fruit" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Longitude" :label-width="formLabelWidth">
+          <el-input v-model="form.longitude" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Latitude" :label-width="formLabelWidth">
+          <el-input v-model="form.latitude" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -91,7 +127,21 @@
 
     data () {
       return {
-        search: ``
+        search: ``,
+        dialogFormVisible: false,
+        formLabelWidth: '100px',
+
+        form: {
+          name: '',
+          id: '',
+          age: '',
+          eyeColor: '',
+          gender: '',
+          pet: '',
+          fruit: '',
+          longitude: '',
+          latitude: '',
+        },
       }
     },
 
@@ -107,7 +157,20 @@
     methods: {
       handleEdit (index, row) {
         console.log(index, row)
+        this.form.id = row._id
+        this.form.name = row.name
+        this.form.age = row.age
+        this.form.gender = row.gender
+        this.form.eyeColor = row.eyeColor
+        this.form.longitude = row.location.longitude
+        this.form.latitude = row.location.latitude
+        this.form.latitude = row.location.latitude
+        this.form.pet = row.preferences.pet
+        this.form.pet = row.preferences.pet
+        this.form.fruit = row.preferences.fruit
+        this.dialogFormVisible = true
       },
+
       handleDelete (index, row) {
         console.log(index, row)
       }
