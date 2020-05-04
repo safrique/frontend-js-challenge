@@ -130,7 +130,7 @@
         search: ``,
         dialogFormVisible: false,
         formLabelWidth: '100px',
-        index: '',
+        // index: '',
 
         form: {
           name: '',
@@ -156,25 +156,54 @@
 
     methods: {
       handleEdit (index, row) {
-        this.index = index
+        // this.index = index
         // console.log(index, row)
         this.updateForm(row)
         this.dialogFormVisible = true
+        // this.index = ''
       },
 
       handleDelete (index, row) {
-        console.log(index, row)
+        // console.log(index, row)
+        this.$confirm(`This will permanently delete the person's details. Continue?`,
+          'Warning', {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+          })
+          .then(() => {
+            this.getPeopleData.splice(index, 1)
+            // the splice above should take care of deleting the person from the store, but let's make sure...
+            this.DeleteStoreData(row)
+            this.$emit(`updatedSummaryData`)
+            this.$message({ type: 'success', message: 'Delete completed' })
+          })
+          .catch(() => {
+            this.$message({ type: 'info', message: 'Delete canceled' })
+          })
       },
 
       confirmEdit () {
         // console.log(`updated form data for index=${this.index}...`)
         // console.log(`index=${this.index} -- this.form:`, this.form)
-        this.updateStore(this.form)
-        console.log(`emitting updatedSummaryData event from child PeopleData...`)
-        this.$emit(`updatedSummaryData`)
-        console.log(`emitted updatedSummaryData event from child PeopleData...`)
-        // console.log(`getPeopleData:`, this.getPeopleData)
-        this.dialogFormVisible = false
+        this.$confirm(`This will permanently edit the person's details. Continue?`,
+          'Warning', {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+          })
+          .then(() => {
+            this.editStoreData(this.form)
+            // console.log(`emitting updatedSummaryData event from child PeopleData...`)
+            this.$emit(`updatedSummaryData`)
+            // console.log(`emitted updatedSummaryData event from child PeopleData...`)
+            // console.log(`getPeopleData:`, this.getPeopleData)
+            this.$message({ type: 'success', message: 'Edit completed' })
+          })
+          .catch(() => {
+            this.$message({ type: 'info', message: 'Edit canceled' })
+          })
+          .finally(this.dialogFormVisible = false)
       },
 
       updateForm (row) {
