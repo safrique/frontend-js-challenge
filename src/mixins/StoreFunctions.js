@@ -41,15 +41,25 @@ export default {
       console.log(`updateSummaryData:`, summary)
       for (let set in summary) {
         console.log(`set=${set} -- summary[set]:`, summary[set])
+        let replaceable = `BracketsData`
+        if (set.includes(replaceable)) {
+          let value = set.replace(replaceable, ``)
+          console.log(`set=${set} includes replaceable=${replaceable} -- value=${value}...`)
+          this.setNewCategoryData(set, value)
+          console.log(`set new category data...`)
+        } else { console.log(`set=${set} does NOT include replaceable=${replaceable}...`) }
       }
       return true
     },
 
     setNewCategoryData (category, value) {
-      // console.log(`setting ${value} data...`)
+      console.log(`setting ${value} data for category=${category}...`)
       this.setData({ data: this.getPeople(), category: value })
         .then(this.setBracketsData({ data: this.summary.summary[`${value}Data`], category: value })
-          .then(() => { return this.summary.summary[category] }))
+          .then(() => {
+            console.log(`this.summary.summary[${category}]`, this.summary.summary[category])
+            return this.summary.summary[category]
+          }))
     },
   },
 }

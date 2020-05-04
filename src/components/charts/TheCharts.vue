@@ -20,10 +20,10 @@
 
     methods: {
       updateData () {
-        console.log(`updateData method triggered in TheCharts...`)
-        console.log(`TheCharts refs:`, this.$refs)
+        // console.log(`updateData method triggered in TheCharts...`)
+        // console.log(`TheCharts refs:`, this.$refs)
         if (this.$refs.pie) {
-          console.log(`updating PieChart data...`)
+          // console.log(`updating PieChart data...`)
           this.$refs.pie.checkDataBuildChart()
         }
       },

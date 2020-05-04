@@ -58,15 +58,14 @@
     methods: {
       checkDataBuildChart () {
         let category = `${this.value}BracketsData`
-        console.log(`category=${this.value} -- checking it exists...`)
+        // console.log(`category=${this.value} -- checking it exists...`)
         let data = this.summary.summary[category]
 
         if (this.value !== `age` && typeof data === `undefined`) {
-          // data = this.setNewCategoryData(category)
           data = this.setNewCategoryData(category, this.value)
         }
 
-        console.log(`checking data again...`)
+        // console.log(`checking data again...`)
         if (typeof data !== `undefined`) {
           this.buildPieChart(data)
           return true
@@ -74,15 +73,8 @@
         return false
       },
 
-      // setNewCategoryData (category) {
-      //   // console.log(`setting ${this.value} data...`)
-      //   this.setData({ data: this.getPeople(), category: this.value })
-      //     .then(this.setBracketsData({ data: this.summary.summary[`${this.value}Data`], category: this.value })
-      //       .then(() => { return this.summary.summary[category] }))
-      // },
-
       buildPieChart (input) {
-        console.log(`building the ${this.value} chart...`)
+        // console.log(`building the ${this.value} chart...`)
         this.setChartData(input)
         if (this.chartData.length) { this.renderChart() }
       },
@@ -96,18 +88,17 @@
               'category': group,
               'value': input[group],
             }
-            // console.log(`new_obj`, new_obj)
             display_data.push(new_obj)
           }
         }
 
         this.chartData = display_data
-        console.log(`chartData:`, this.chartData)
+        // console.log(`chartData:`, this.chartData)
       },
 
       renderChart () {
         setTimeout(() => {
-          console.log(`building ${this.value} chart now...`)
+          // console.log(`building ${this.value} chart now...`)
           AmCharts.makeChart('pie-chart-render',
             {
               'type': 'pie',
@@ -116,7 +107,7 @@
               'dataProvider': this.chartData
             }
           )
-          console.log(`chart built...`)
+          // console.log(`chart built...`)
         }, 500)
       },
 

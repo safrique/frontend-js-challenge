@@ -71,13 +71,13 @@
 
     methods: {
       emitUpdatedEvent () {
-        console.log(`emitting updated-summary-data event from parent TheTabs...`)
+        // console.log(`emitting updated-summary-data event from parent TheTabs...`)
         this.$emit(`updatedSummaryData`)
-        console.log(`TheTabs refs:`, this.$refs)
+        // console.log(`TheTabs refs:`, this.$refs)
         if (this.$refs.charts) {
           this.$refs.charts.updateData()
-        } else { console.log(`this.$refs.charts not yet registered...`) }
-        console.log(`emitted updated-summary-data event from parent TheTabs...`)
+        } // else { console.log(`this.$refs.charts not yet registered...`) }
+        // console.log(`emitted updated-summary-data event from parent TheTabs...`)
       },
     },
 
