@@ -1,22 +1,30 @@
 <template>
   <div id="the-tabs">
     <el-tabs v-model="getActiveTabId" type="border-card">
-      <el-tab-pane name="people-data">
+      <el-tab-pane
+        name="people-data"
+        :lazy="true">
         <span slot="label"><i class="el-icon-s-grid"></i> Table</span>
         <PeopleData></PeopleData>
       </el-tab-pane>
 
-      <el-tab-pane name="charts">
+      <el-tab-pane
+        name="charts"
+        :lazy="true">
         <span slot="label"><i class="el-icon-pie-chart"></i> Charts</span>
         <TheCharts></TheCharts>
       </el-tab-pane>
 
-      <el-tab-pane name="map">
+      <el-tab-pane
+        name="map"
+        :lazy="true">
         <span slot="label"><i class="el-icon-location-outline"></i> Map</span>
         <MapChart></MapChart>
       </el-tab-pane>
 
-      <el-tab-pane name="instructions">
+      <el-tab-pane
+        name="instructions"
+        :lazy="true">
         <span slot="label"><i class="el-icon-notebook-1"></i> Instructions</span>
         <AppInstructions></AppInstructions>
       </el-tab-pane>

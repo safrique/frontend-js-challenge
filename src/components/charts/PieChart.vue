@@ -31,10 +31,13 @@
           this.options = Helpers.buildPersonAttributes(this.getPeopleData)
         }
 
-        if (!this.checkDataBuildChart()) {
+        if (!this.chartBuilt) {
+          // console.log(`chartBuilt=${this.chartBuilt}. #${this.componentKey}..`)
           setTimeout(() => {
             if (this.checkDataBuildChart()) { return false }
           }, 500)
+
+          this.chartBuilt = true
         }
 
         this.componentKey++
@@ -48,6 +51,7 @@
         value: `age`,
         componentKey: 0,
         chartData: [],
+        chartBuilt: false,
       }
     },
 
@@ -61,6 +65,7 @@
           data = this.setNewCategoryData(category)
         }
 
+        // console.log(`checking data again...`)
         if (typeof data !== `undefined`) {
           this.buildPieChart(data)
           return true
@@ -69,6 +74,7 @@
       },
 
       setNewCategoryData (category) {
+        // console.log(`setting ${this.value} data...`)
         this.setData({ data: this.getPeople(), category: this.value })
           .then(this.setBracketsData({ data: this.summary.summary[`${this.value}Data`], category: this.value })
             .then(() => { return this.summary.summary[category] }))
@@ -100,7 +106,7 @@
 
       renderChart () {
         setTimeout(() => {
-          // console.log(`building chart now...`)
+          // console.log(`building ${this.value} chart now...`)
           AmCharts.makeChart('pie-chart-render',
             {
               'type': 'pie',
