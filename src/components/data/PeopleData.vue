@@ -86,7 +86,7 @@
     <el-dialog title="Shipping address" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="ID" :label-width="formLabelWidth">
-          <el-input v-model="form.id" autocomplete="off"></el-input>
+          <el-input v-model="form._id" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="Name" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -101,21 +101,21 @@
           <el-input v-model="form.gender" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Pet" :label-width="formLabelWidth">
-          <el-input v-model="form.pet" autocomplete="off"></el-input>
+          <el-input v-model="form.preferences.pet" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Fruit" :label-width="formLabelWidth">
-          <el-input v-model="form.fruit" autocomplete="off"></el-input>
+          <el-input v-model="form.preferences.fruit" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Longitude" :label-width="formLabelWidth">
-          <el-input v-model="form.longitude" autocomplete="off"></el-input>
+          <el-input v-model="form.location.longitude" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Latitude" :label-width="formLabelWidth">
-          <el-input v-model="form.latitude" autocomplete="off"></el-input>
+          <el-input v-model="form.location.latitude" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+    <el-button type="primary" @click="confirmEdit">Confirm</el-button>
   </span>
     </el-dialog>
   </div>
@@ -130,6 +130,7 @@
         search: ``,
         dialogFormVisible: false,
         formLabelWidth: '100px',
+        index: '',
 
         form: {
           name: '',
@@ -137,44 +138,77 @@
           age: '',
           eyeColor: '',
           gender: '',
-          pet: '',
-          fruit: '',
-          longitude: '',
-          latitude: '',
+          preferences: {
+            pet: '',
+            fruit: '',
+          },
+          location: {
+            longitude: '',
+            latitude: '',
+          },
         },
       }
     },
 
     computed: {
-      getPeopleData () {
-        // let data = this.getPeople()
-        // console.log(`getPeopleData:`, data)
-        // return data
-        return this.getPeople()
-      }
+      getPeopleData () { return this.getPeople() }
     },
 
     methods: {
       handleEdit (index, row) {
+        this.index = index
         console.log(index, row)
-        this.form.id = row._id
-        this.form.name = row.name
-        this.form.age = row.age
-        this.form.gender = row.gender
-        this.form.eyeColor = row.eyeColor
-        this.form.longitude = row.location.longitude
-        this.form.latitude = row.location.latitude
-        this.form.latitude = row.location.latitude
-        this.form.pet = row.preferences.pet
-        this.form.pet = row.preferences.pet
-        this.form.fruit = row.preferences.fruit
+        this.updateForm(row)
         this.dialogFormVisible = true
       },
 
       handleDelete (index, row) {
         console.log(index, row)
-      }
-    },
+      },
+
+      confirmEdit () {
+        // console.log(`updated form data for index=${this.index}...`)
+        // console.log(`index=${this.index} -- this.form:`, this.form)
+        this.updateStore(this.form)
+        // console.log(`getPeopleData:`, this.getPeopleData)
+        this.dialogFormVisible = false
+      },
+
+      // updateStore (form) {
+      //   let people = this.people.people
+      //   // console.log(`updating store...`, people)
+      //   for (let person in people) {
+      //     if (people.hasOwnProperty(person) && people[person]._id === form._id) {
+      //       this.people.people[person] = people[person]
+      //       // console.log(`found person with ID=${this.form._id} -- personIndex=${person} -- store.people[person]:`, this.people.people[person])
+      //       return people[person]
+      //     }
+      //   }
+      // },
+
+      // getFilteredData (array, key, value) {
+      //   // return array.filter((e) => {
+      //   //   console.log(`key=${key} -- value=${value} -- array:`, array, `-- e:`, e)
+      //   //   return e[key] === value
+      //   // })
+      // },
+
+      updateForm (row) {
+        this.form = row
+        // this.form.id = row._id
+        // this.form.name = row.name
+        // this.form.age = row.age
+        // this.form.gender = row.gender
+        // this.form.eyeColor = row.eyeColor
+        // this.form.longitude = row.location.longitude
+        // this.form.latitude = row.location.latitude
+        // this.form.latitude = row.location.latitude
+        // this.form.pet = row.preferences.pet
+        // this.form.pet = row.preferences.pet
+        // this.form.fruit = row.preferences.fruit
+      },
+    }
+    ,
   }
 </script>
 
