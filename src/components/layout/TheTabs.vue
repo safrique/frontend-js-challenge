@@ -5,14 +5,14 @@
         name="people-data"
         :lazy="true">
         <span slot="label"><i class="el-icon-s-grid"></i> Table</span>
-        <PeopleData></PeopleData>
+        <PeopleData @updatedSummaryData="emitUpdatedEvent"></PeopleData>
       </el-tab-pane>
 
       <el-tab-pane
         name="charts"
         :lazy="true">
         <span slot="label"><i class="el-icon-pie-chart"></i> Charts</span>
-        <TheCharts></TheCharts>
+        <TheCharts ref="charts"></TheCharts>
       </el-tab-pane>
 
       <el-tab-pane
@@ -67,6 +67,25 @@
           this.$router.push(`/${name === 'people-data' ? '' : name}`)
         },
       },
+    },
+
+    methods: {
+      emitUpdatedEvent () {
+        console.log(`emitting updated-summary-data event from parent TheTabs...`)
+        this.$emit(`updatedSummaryData`)
+        console.log(`TheTabs refs:`, this.$refs)
+        if (this.$refs.charts) {
+          this.$refs.charts.updateData()
+        } else { console.log(`this.$refs.charts not yet registered...`) }
+        console.log(`emitted updated-summary-data event from parent TheTabs...`)
+      },
+    },
+
+    created () {
+      // this.$on(`updatedSummaryData`, () => {
+      //   this.$emit(`updatedSummaryData`)
+      //   console.log(`emitted updated-summary-data event from parent TheTabs...`)
+      // })
     },
   }
 </script>

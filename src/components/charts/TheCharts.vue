@@ -1,7 +1,7 @@
 <template>
   <div id="the-chart">
     <h1>Charts</h1>
-    <PieChart></PieChart>
+    <PieChart ref="pie"></PieChart>
     <BarChart></BarChart>
   </div>
 </template>
@@ -11,12 +11,23 @@
   import PieChart from './PieChart'
 
   export default {
-    name: 'TheChart',
+    name: 'TheCharts',
 
     components: {
       BarChart,
       PieChart,
-    }
+    },
+
+    methods: {
+      updateData () {
+        console.log(`updateData method triggered in TheCharts...`)
+        console.log(`TheCharts refs:`, this.$refs)
+        if (this.$refs.pie) {
+          console.log(`updating PieChart data...`)
+          this.$refs.pie.checkDataBuildChart()
+        }
+      },
+    },
   }
 </script>
 

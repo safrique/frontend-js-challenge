@@ -157,7 +157,7 @@
     methods: {
       handleEdit (index, row) {
         this.index = index
-        console.log(index, row)
+        // console.log(index, row)
         this.updateForm(row)
         this.dialogFormVisible = true
       },
@@ -170,42 +170,15 @@
         // console.log(`updated form data for index=${this.index}...`)
         // console.log(`index=${this.index} -- this.form:`, this.form)
         this.updateStore(this.form)
+        console.log(`emitting updatedSummaryData event from child PeopleData...`)
+        this.$emit(`updatedSummaryData`)
+        console.log(`emitted updatedSummaryData event from child PeopleData...`)
         // console.log(`getPeopleData:`, this.getPeopleData)
         this.dialogFormVisible = false
       },
 
-      // updateStore (form) {
-      //   let people = this.people.people
-      //   // console.log(`updating store...`, people)
-      //   for (let person in people) {
-      //     if (people.hasOwnProperty(person) && people[person]._id === form._id) {
-      //       this.people.people[person] = people[person]
-      //       // console.log(`found person with ID=${this.form._id} -- personIndex=${person} -- store.people[person]:`, this.people.people[person])
-      //       return people[person]
-      //     }
-      //   }
-      // },
-
-      // getFilteredData (array, key, value) {
-      //   // return array.filter((e) => {
-      //   //   console.log(`key=${key} -- value=${value} -- array:`, array, `-- e:`, e)
-      //   //   return e[key] === value
-      //   // })
-      // },
-
       updateForm (row) {
         this.form = row
-        // this.form.id = row._id
-        // this.form.name = row.name
-        // this.form.age = row.age
-        // this.form.gender = row.gender
-        // this.form.eyeColor = row.eyeColor
-        // this.form.longitude = row.location.longitude
-        // this.form.latitude = row.location.latitude
-        // this.form.latitude = row.location.latitude
-        // this.form.pet = row.preferences.pet
-        // this.form.pet = row.preferences.pet
-        // this.form.fruit = row.preferences.fruit
       },
     }
     ,
