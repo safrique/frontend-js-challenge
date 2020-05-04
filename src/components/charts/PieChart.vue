@@ -69,6 +69,7 @@
         // console.log(`chart data...`, data)
 
         // console.log(`waiting before carrying on...`)
+        // the data seems to take a bit of time before being set in the vuex store so we have to wait a little
         setTimeout(() => {
           // console.log(`waited - trying again...`)
           if (typeof data === `undefined`) {
