@@ -13,6 +13,23 @@
   <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
   <script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
   <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+  <!-- catch-all error reporting message -->
+  <script type="text/javascript">
+    // window.onerror = function myErrorHandler (errorMsg, url, lineNumber) {
+    //   alert(`Error occurred: ${errorMsg} at line number=${lineNumber} on url=${url}`)
+    //   return false
+    // }
+    // window.onerror = function (message, file, line, col, error) {
+    //   alert(`Error occurred: ${error.message}`)
+    //   return false
+    // }
+
+    window.addEventListener('error', (e) => {
+      console.log(`Error occurred: ${e.error.message}`)
+      return false
+    })
+  </script>
 </head>
 <body>
 <div id="app"></div>
