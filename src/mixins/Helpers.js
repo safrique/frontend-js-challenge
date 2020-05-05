@@ -1,20 +1,16 @@
 export default {
   getPeoplePropertyData (people, category) {
     let data = {}
-    // console.log(`getPeoplePropertyData people:`, people)
-    let location = [`longitude`, `latitude`]
+    // console.log(`${category} getPeoplePropertyData people:`, people)
     let preferences = [`pet`, `fruit`]
     let nested = []
     let nested_category
 
-    if (location.includes(category)) {
-      for (let i = 0, j = location.length; i < j; i++) { nested.push(location[i]) }
-      nested_category = `location`
-    } else if (preferences.includes(category)) {
+    if (preferences.includes(category)) {
       for (let i = 0, j = preferences.length; i < j; i++) { nested.push(preferences[i]) }
       nested_category = `preferences`
     }
-    // console.log(`nested:`, nested)
+    // console.log(`${category} nested:`, nested)
 
     for (let person in people) {
       if (people.hasOwnProperty(person)) {

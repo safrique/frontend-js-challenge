@@ -201,7 +201,7 @@
               // the splice above should take care of deleting the person from the store, but let's make sure...
               this.DeleteStoreData(person)
             } else {
-              this.editStoreData(this.form)
+              this.editPersonStoreData(this.form)
             }
 
             this.$message({ type: 'success', center: true, message: `${action} completed` })

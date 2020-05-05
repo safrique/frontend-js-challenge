@@ -22,7 +22,7 @@ export default {
         })
     },
 
-    editStoreData (person, delete_person = false) {
+    editPersonStoreData (person, delete_person = false) {
       let people = this.getPeople()
       // console.log(`updating store...`, people)
       for (let item in people) {
@@ -45,7 +45,7 @@ export default {
 
     DeleteStoreData (person) {
       // console.log(`deleting store data...`, person)
-      if (!this.editStoreData(person, true)) {
+      if (!this.editPersonStoreData(person, true)) {
         // this indicates the person wasn't found, i.e. already deleted, but we still want to update the summary data
         this.updateSummaryData()
       }
