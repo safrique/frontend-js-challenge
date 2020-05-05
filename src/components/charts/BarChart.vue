@@ -36,15 +36,15 @@
           this.dataType = `${this.chartType}Data`
           let cType = this.chartType.toString()
           this.chartTitle = `People' ${cType.replace(`Color`, ` colour`)}s`
+
+          setTimeout(() => {
+            this.setChartData()
+            this.renderBarChart()
+          }, 500)
         } catch (e) {
           console.log(`${this.$options.name} checkDataBuildChart error...`, e)
           return false
         }
-
-        setTimeout(() => {
-          this.setChartData()
-          this.renderBarChart()
-        }, 500)
       },
 
       setChartData () {
@@ -72,7 +72,6 @@
           }
         } catch (e) {
           console.log(`${this.$options.name} buildChartData error...`, e)
-          return false
         }
 
         // console.log(`new_data...`, new_data)
