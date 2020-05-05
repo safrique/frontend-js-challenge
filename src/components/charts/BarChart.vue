@@ -1,5 +1,6 @@
 <template>
   <div id="bar-chart">
+    <h3>{{ chartTitle }}</h3>
     <div id="bar-chart-render" style="width: 100%; height: 400px;"></div>
   </div>
 </template>
@@ -12,7 +13,8 @@
       return {
         chartData: [],
         chartType: `age`,
-        dataType: `${this.chartType}Data`
+        dataType: `${this.chartType}Data`,
+        chartTitle: ``,
       }
     },
 
@@ -21,6 +23,7 @@
         // console.log(`building ${type} bar chart...`)
         this.chartType = type
         this.dataType = `${this.chartType}Data`
+        this.chartTitle = `People' ${this.chartType.replace(`Color`, ` colour`)}s`
 
         setTimeout(() => {
           this.setChartData()
@@ -60,7 +63,7 @@
               'graphs': [
                 {
                   'type': 'column',
-                  'title': `People ${this.chartType.replace(`Color`, ` colour`)}s`,
+                  'title': this.chartTitle,
                   'valueField': 'value',
                   'fillAlphas': 0.8
                 }
