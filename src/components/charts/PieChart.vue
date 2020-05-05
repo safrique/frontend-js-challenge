@@ -11,14 +11,21 @@
     </el-select>
 
     <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
+
+    <PieChartTable :table-data="chartData"></PieChartTable>
   </div>
 </template>
 
 <script>
   import Helpers from '../../mixins/Helpers'
+  import PieChartTable from '../data/ChartTable'
 
   export default {
     name: 'PieChart',
+
+    components: {
+      PieChartTable,
+    },
 
     computed: {
       getPeopleData () {

@@ -2,12 +2,19 @@
   <div id="bar-chart">
     <h3>{{ chartTitle }}</h3>
     <div id="bar-chart-render" style="width: 100%; height: 400px;"></div>
+    <ChartTable :table-data="chartData" id="bar-chart-table"></ChartTable>
   </div>
 </template>
 
 <script>
+  import ChartTable from '../data/ChartTable'
+
   export default {
     name: 'BarChart',
+
+    components: {
+      ChartTable,
+    },
 
     data () {
       return {
@@ -45,7 +52,7 @@
         for (let item in data) {
           if (data.hasOwnProperty(item)) {
             // console.log(`item=${item} -- data[key]...`, data[item])
-            new_data.push({ 'type': item, 'value': data[item] })
+            new_data.push({ 'category': item, 'value': data[item] })
           }
         }
 
@@ -58,7 +65,7 @@
           AmCharts.makeChart('bar-chart-render',
             {
               'type': 'serial',
-              'categoryField': 'type',
+              'categoryField': 'category',
               'chartCursor': {},
               'graphs': [
                 {
@@ -79,5 +86,7 @@
 </script>
 
 <style scoped>
-
+  #bar-chart-table {
+    margin-top: 2em;
+  }
 </style>
