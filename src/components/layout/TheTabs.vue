@@ -19,7 +19,7 @@
         name="map"
         :lazy="true">
         <span slot="label"><i class="el-icon-location-outline"></i> Map</span>
-        <MapChart></MapChart>
+        <MapChart ref="map"></MapChart>
       </el-tab-pane>
 
       <el-tab-pane
@@ -77,6 +77,10 @@
         // console.log(`TheTabs refs:`, this.$refs)
         if (this.$refs.charts) {
           this.$refs.charts.updateData()
+        }
+        if (this.$refs.map) {
+          // console.log(`triggering map update...`)
+          this.$refs.map.makeMap(true)
         } // else { console.log(`this.$refs.charts not yet registered...`) }
         // console.log(`emitted updated-summary-data event from parent TheTabs...`)
       },

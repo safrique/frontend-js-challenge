@@ -27,9 +27,9 @@
     },
 
     methods: {
-      makeMap () {
+      makeMap (refresh = false) {
         setTimeout(() => {
-          if (this.mapPeopleData && this.mapPeopleData.length === 0) { this.setMapData() }
+          if (this.mapPeopleData && (this.mapPeopleData.length === 0 || refresh)) { this.setMapData() }
 
           setTimeout(() => {
             let map = AmCharts.makeChart('map-chart-render', {
@@ -83,6 +83,7 @@
 
       setMapData () {
         // console.log(`mapPeopleData...`, this.mapPeopleData)
+        this.mapPeopleData = []
         let people = this.getPeople()
 
         for (let person in people) {
