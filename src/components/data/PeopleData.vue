@@ -73,7 +73,7 @@
             type="primary"
             round
             plain
-            @click="addPerson"
+            @click="handleAddPerson"
             icon="el-icon-circle-plus-outline"
             style="padding: 0.5em; margin-top: 1em;">
             Add Person
@@ -140,6 +140,8 @@
         search: ``,
         dialogFormVisible: false,
         formLabelWidth: '100px',
+        prankPlayed: false,
+        prankText: `Sorry, you don't have access to this functionality! Please upgrade your subscription to have access to this!`,
 
         form: {
           name: '',
@@ -185,7 +187,8 @@
           'Warning', {
             confirmButtonText: 'OK',
             cancelButtonText: 'Cancel',
-            type: 'warning'
+            type: 'warning',
+            center: true
           })
           .then(() => {
             if (delete_person) {
@@ -196,11 +199,11 @@
               this.editStoreData(this.form)
             }
 
-            this.$message({ type: 'success', message: `${action} completed` })
+            this.$message({ type: 'success', center: true, message: `${action} completed` })
           })
           .catch((e) => {
             console.log(`error on ${action.toLowerCase()}...`, e)
-            this.$message({ type: 'info', message: `${action} canceled` })
+            this.$message({ type: 'info', center: true, message: `${action} canceled` })
           })
           .finally(() => {
             if (!delete_person) {this.dialogFormVisible = false}
@@ -212,9 +215,42 @@
         this.form = row
       },
 
-      addPerson () {
+      handleAddPerson () {
         console.log(`add button clicked...`)
-        this.$message({ type: 'success', message: `Person added` })
+
+        if (!this.prankPlayed) {
+          this.$alert(this.prankText, 'Unauthorised!!', {
+            confirmButtonText: 'OK',
+            center: true,
+            type: `error`,
+            // iconClass: `el-icon-bank-card`,
+            callback: action => {
+              this.$message({ type: 'info', center: true, message: `You've ${action}ed lack of authorisation` })
+              setTimeout(() => {
+                this.$alert(`Just kidding... You have full access :)`, 'Authorised!!', {
+                  confirmButtonText: 'OK',
+                  center: true,
+                  type: `success`,
+                  callback: () => {
+                    this.prankPlayed = true
+                    this.$message({ type: 'success', center: true, message: `Prank completed :)` })
+                  }
+                })
+              }, 3000)
+            }
+          })
+        } else {
+          this.$message({
+            type: 'success',
+            center: true,
+            message: `Prank already played - refresh page to see it again... :)`
+          })
+          this.addPerson()
+        }
+      },
+
+      addPerson () {
+        this.$message({ type: 'success', center: true, message: `Person added` })
       },
     }
     ,
@@ -224,3 +260,4 @@
 <style scoped>
 
 </style>
+this.$alert(this.prankText, 'Unauthorised!!', { confirmButtonText: 'OK', center: true, callback: action => { this.$message({ type: 'info', message: `action: ${action}` }) } })

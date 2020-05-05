@@ -20,7 +20,7 @@
       return {
         chartData: [],
         chartType: `age`,
-        dataType: `${this.chartType}Data`,
+        dataType: ``,
         chartTitle: ``,
       }
     },
