@@ -26,12 +26,16 @@
     },
 
     methods: {
-      checkDataBuildChart (type) {
-        // console.log(`building ${type} bar chart...`)
+      checkDataBuildChart (type = this.chartType) {
+        // console.log(`building ${type} bar chartType=${this.chartType} chart...`)
         try {
+          // type = type || this.chartType
+          // console.log(`type is now: ${type} && chartType=${this.chartType}`)
           this.chartType = type
+          // console.log(`chartType=${this.chartType} -- typeof=${typeof this.chartType}...`)
           this.dataType = `${this.chartType}Data`
-          this.chartTitle = `People' ${this.chartType.replace(`Color`, ` colour`)}s`
+          let cType = this.chartType.toString()
+          this.chartTitle = `People' ${cType.replace(`Color`, ` colour`)}s`
         } catch (e) {
           console.log(`${this.$options.name} checkDataBuildChart error...`, e)
           return false

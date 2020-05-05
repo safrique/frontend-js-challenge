@@ -50,6 +50,7 @@
 
       emitChartBuiltEvent (type) {
         // console.log(`TheCharts refs:`, this.$refs)
+        // console.log(`emit type=${type}`)
         this.updateBarChart(type)
       },
     },
