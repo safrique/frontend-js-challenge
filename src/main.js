@@ -8,6 +8,7 @@ import routes from './routes/routes'
 import AmCharts from 'amcharts3'
 import AmSerial from 'amcharts3/amcharts/serial'
 import AmPieChart from 'amcharts3/amcharts/pie'
+// import AmMap from 'amcharts3/amcharts/map'
 import StoreFunctions from './mixins/StoreFunctions'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
@@ -33,6 +34,7 @@ new Vue({
   AmCharts,
   AmSerial,
   AmPieChart,
+  // AmMap,
 
   mixins: [StoreFunctions],
 

@@ -18,6 +18,11 @@
         label="ID"
         width="250">
       </el-table-column>
+<!--      <el-table-column-->
+<!--        :prop="$index"-->
+<!--        label="#"-->
+<!--        width="50">-->
+<!--      </el-table-column>-->
       <el-table-column
         prop="age"
         label="Age"
@@ -27,7 +32,7 @@
       <el-table-column
         prop="eyeColor"
         label="Eye Colour"
-        width="90"
+        width="100"
         sortable>
       </el-table-column>
       <el-table-column
