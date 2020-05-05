@@ -131,4 +131,15 @@ export default {
     // console.log(`data:`, data)
     return data
   },
+
+  generateRandomString (len) {
+    try {
+      let s = ''
+      while (s.length < len) s += Math.random().toString(36).substr(2, len - s.length)
+      return s
+    } catch (e) {
+      console.log(`Helpers buildPersonAttributes error...`, e)
+      return false
+    }
+  }
 }

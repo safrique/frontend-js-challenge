@@ -78,7 +78,7 @@
             type="primary"
             round
             plain
-            @click="handleAddPerson"
+            @click="handleAddPersonButtonClick"
             icon="el-icon-circle-plus-outline"
             style="padding: 0.5em; margin-top: 1em;">
             Add Person
@@ -130,13 +130,15 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="confirmEdit">Confirm</el-button>
+    <el-button type="primary" @click="handleEditConfirmClicked">Confirm</el-button>
   </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import Helpers from '../../mixins/Helpers'
+
   export default {
     name: 'PeopleData',
 
@@ -147,29 +149,16 @@
         formLabelWidth: '100px',
         prankPlayed: false,
         prankText: `Sorry, you don't have access to this functionality! Please upgrade your subscription to have access to this!`,
+        addingPerson: false,
 
-        form: {
-          name: '',
-          id: '',
-          age: '',
-          eyeColor: '',
-          gender: '',
-          preferences: {
-            pet: '',
-            fruit: '',
-          },
-          location: {
-            longitude: '',
-            latitude: '',
-          },
-        },
+        form: {},
       }
     },
 
     computed: {
       getPeopleData () {
         try { return this.getPeople() } catch (e) {
-          console.log(`${this.$options.name} confirmChange error...`, e)
+          console.log(`${this.$options.name} getPeopleData error...`, e)
           return false
         }
       }
@@ -182,6 +171,29 @@
         this.dialogFormVisible = true
       },
 
+      resetForm () {
+        try {
+          this.form = {
+            name: '',
+            id: '',
+            age: '',
+            eyeColor: '',
+            gender: '',
+            preferences: {
+              pet: '',
+              fruit: '',
+            },
+            location: {
+              longitude: '',
+              latitude: '',
+            },
+          }
+        } catch (e) {
+          console.log(`${this.$options.name} resetForm error...`, e)
+          return false
+        }
+      },
+
       handleDelete (index, row) {
         this.confirmChange(true, row, index)
       },
@@ -190,9 +202,15 @@
         this.confirmChange()
       },
 
-      confirmChange (delete_person = false, person = null, index = null) {
+      handleEditConfirmClicked () {
+        if (this.addingPerson) {
+          this.addNewPerson()
+        } else { this.confirmEdit() }
+      },
+
+      confirmChange (deletePerson = false, person = null, index = null) {
         try {
-          let action = (delete_person ? `Delete` : `Edit`)
+          let action = (deletePerson ? `Delete` : `Edit`)
 
           this.$confirm(`This will permanently ${action.toLowerCase()} the person's details. Continue?`,
             'Warning', {
@@ -201,9 +219,9 @@
               type: 'warning',
               center: true
             })
-            .then((action) => {
-              if (action === `confirm`) {
-                if (delete_person) {
+            .then((clicked) => {
+              if (clicked === `confirm`) {
+                if (deletePerson) {
                   this.getPeopleData.splice(index, 1)
                   // the splice above should take care of deleting the person from the store, but let's make sure...
                   this.DeleteStoreData(person)
@@ -219,7 +237,7 @@
               this.$message({ type: 'info', center: true, message: `${action} canceled` })
             })
             .finally(() => {
-              if (!delete_person) {this.dialogFormVisible = false}
+              if (!deletePerson) {this.dialogFormVisible = false}
               this.$emit(`updatedSummaryData`)
             })
         } catch (e) {
@@ -230,6 +248,8 @@
 
       updateForm (row) {
         try {
+          this.resetForm()
+
           for (let item in row) {
             if (row.hasOwnProperty(item)) {
               // console.log(`item=${item} -- row[item]=`, row[item])
@@ -243,7 +263,7 @@
         }
       },
 
-      handleAddPerson () {
+      handleAddPersonButtonClick () {
         console.log(`add button clicked...`)
         this.runPrank()
       },
@@ -277,7 +297,7 @@
               center: true,
               message: `Prank already played - refresh page to see it again... :)`
             })
-            this.addPerson()
+            this.handleAddNewPerson()
           }
         } catch (e) {
           console.log(`${this.$options.name} runPrank error...`, e)
@@ -285,16 +305,53 @@
         }
       },
 
-      addPerson () {
+      handleAddNewPerson () {
         try {
-          this.$message({ type: 'success', center: true, message: `Person added` })
+          this.resetForm()
+          this.form._id = Helpers.generateRandomString(24)
+          this.addingPerson = true
+          this.dialogFormVisible = true
         } catch (e) {
-          console.log(`${this.$options.name} addPerson error...`, e)
+          console.log(`${this.$options.name} handleAddNewPerson error...`, e)
           return false
         }
       },
-    }
-    ,
+
+      addNewPerson () {
+        try {
+          this.$confirm(`This will add a new person's details. Continue?`,
+            'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning',
+              center: true
+            })
+            .then((action) => {
+              if (action === `confirm`) {
+                this.people.people.push(this.form)
+                this.$message({ type: 'success', center: true, message: `Adding new person completed` })
+              } else { this.$message({ type: 'info', center: true, message: `Adding new person canceled` }) }
+            })
+            .catch((e) => {
+              console.log(`error on adding new person}...`, e)
+              this.$message({ type: 'info', center: true, message: `Adding new person canceled` })
+            })
+            .finally(() => {
+              this.dialogFormVisible = false
+              this.addingPerson = false
+              this.$emit(`updatedSummaryData`)
+            })
+        } catch (e) {
+          console.log(`${this.$options.name} handleAddNewPerson error...`, e)
+          this.addingPerson = false
+          return false
+        }
+      },
+    },
+
+    created () {
+      this.resetForm()
+    },
   }
 </script>
 
