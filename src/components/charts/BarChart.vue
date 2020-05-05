@@ -28,9 +28,13 @@
     methods: {
       checkDataBuildChart (type) {
         // console.log(`building ${type} bar chart...`)
-        this.chartType = type
-        this.dataType = `${this.chartType}Data`
-        this.chartTitle = `People' ${this.chartType.replace(`Color`, ` colour`)}s`
+        try {
+          this.chartType = type
+          this.dataType = `${this.chartType}Data`
+          this.chartTitle = `People' ${this.chartType.replace(`Color`, ` colour`)}s`
+        } catch (e) {
+          console.log(`${this.$options.name} checkDataBuildChart error...`, e)
+        }
 
         setTimeout(() => {
           this.setChartData()
@@ -42,18 +46,26 @@
         // let data = this.summary.summary[this.dataType]
         // // console.log(`bar chart data...`, data)
         // this.chartData = this.buildChartData(data)
-        this.chartData = this.buildChartData(this.summary.summary[this.dataType])
+        try {
+          this.chartData = this.buildChartData(this.summary.summary[this.dataType])
+        } catch (e) {
+          console.log(`${this.$options.name} setChartData error...`, e)
+        }
       },
 
       buildChartData (data) {
         // console.log(`building bar chart data...`, data)
         let new_data = []
 
-        for (let item in data) {
-          if (data.hasOwnProperty(item)) {
-            // console.log(`item=${item} -- data[key]...`, data[item])
-            new_data.push({ 'category': item, 'value': data[item] })
+        try {
+          for (let item in data) {
+            if (data.hasOwnProperty(item)) {
+              // console.log(`item=${item} -- data[key]...`, data[item])
+              new_data.push({ 'category': item, 'value': data[item] })
+            }
           }
+        } catch (e) {
+          console.log(`${this.$options.name} buildChartData error...`, e)
         }
 
         // console.log(`new_data...`, new_data)
@@ -61,25 +73,29 @@
       },
 
       renderBarChart () {
-        setTimeout(() => {
-          AmCharts.makeChart('bar-chart-render',
-            {
-              'type': 'serial',
-              'categoryField': 'category',
-              'chartCursor': {},
-              'graphs': [
-                {
-                  'type': 'column',
-                  'title': this.chartTitle,
-                  'valueField': 'value',
-                  'fillAlphas': 0.8
-                }
-              ],
+        try {
+          setTimeout(() => {
+            AmCharts.makeChart('bar-chart-render',
+              {
+                'type': 'serial',
+                'categoryField': 'category',
+                'chartCursor': {},
+                'graphs': [
+                  {
+                    'type': 'column',
+                    'title': this.chartTitle,
+                    'valueField': 'value',
+                    'fillAlphas': 0.8
+                  }
+                ],
 
-              'dataProvider': this.chartData
-            }
-          )
-        }, 500)
+                'dataProvider': this.chartData
+              }
+            )
+          }, 500)
+        } catch (e) {
+          console.log(`${this.$options.name} renderBarChart error...`, e)
+        }
       },
     },
   }
