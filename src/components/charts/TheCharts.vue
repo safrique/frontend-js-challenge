@@ -20,21 +20,29 @@
 
     methods: {
       updateData () {
-        // console.log(`updateData method triggered in TheCharts...`)
-        // console.log(`TheCharts refs:`, this.$refs)
-        if (this.$refs.pie) {
-          // console.log(`updating PieChart data...`)
-          this.$refs.pie.checkDataBuildChart()
-        }
+        try {
+          // console.log(`updateData method triggered in TheCharts...`)
+          // console.log(`TheCharts refs:`, this.$refs)
+          if (this.$refs.pie) {
+            // console.log(`updating PieChart data...`)
+            this.$refs.pie.checkDataBuildChart()
+          }
 
-        this.updateBarChart()
+          this.updateBarChart()
+        } catch (e) {
+          console.log(`${this.$options.name} updateData error...`, e)
+        }
       },
 
       updateBarChart (type) {
-        // console.log(`updating ${type} bar chart from TheCharts...`)
-        if (this.$refs.bar) {
-          // console.log(`updating PieChart data...`)
-          this.$refs.bar.checkDataBuildChart(type)
+        try {
+          // console.log(`updating ${type} bar chart from TheCharts...`)
+          if (this.$refs.bar) {
+            // console.log(`updating PieChart data...`)
+            this.$refs.bar.checkDataBuildChart(type)
+          }
+        } catch (e) {
+          console.log(`${this.$options.name} updateBarChart error...`, e)
         }
       },
 
