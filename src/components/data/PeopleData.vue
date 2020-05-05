@@ -186,45 +186,53 @@
       },
 
       confirmChange (delete_person = false, person = null, index = null) {
-        let action = (delete_person ? `Delete` : `Edit`)
+        try {
+          let action = (delete_person ? `Delete` : `Edit`)
 
-        this.$confirm(`This will permanently ${action.toLowerCase()} the person's details. Continue?`,
-          'Warning', {
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
-            center: true
-          })
-          .then((action) => {
-            if (action === `confirm`) {
-              if (delete_person) {
-                this.getPeopleData.splice(index, 1)
-                // the splice above should take care of deleting the person from the store, but let's make sure...
-                this.DeleteStoreData(person)
-              } else {
-                this.editPersonStoreData(this.form)
-              }
+          this.$confirm(`This will permanently ${action.toLowerCase()} the person's details. Continue?`,
+            'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning',
+              center: true
+            })
+            .then((action) => {
+              if (action === `confirm`) {
+                if (delete_person) {
+                  this.getPeopleData.splice(index, 1)
+                  // the splice above should take care of deleting the person from the store, but let's make sure...
+                  this.DeleteStoreData(person)
+                } else {
+                  this.editPersonStoreData(this.form)
+                }
 
-              this.$message({ type: 'success', center: true, message: `${action} completed` })
-            } else { this.$message({ type: 'info', center: true, message: `${action} canceled` }) }
-          })
-          .catch((e) => {
-            console.log(`error on ${action.toLowerCase()}...`, e)
-            this.$message({ type: 'info', center: true, message: `${action} canceled` })
-          })
-          .finally(() => {
-            if (!delete_person) {this.dialogFormVisible = false}
-            this.$emit(`updatedSummaryData`)
-          })
+                this.$message({ type: 'success', center: true, message: `${action} completed` })
+              } else { this.$message({ type: 'info', center: true, message: `${action} canceled` }) }
+            })
+            .catch((e) => {
+              console.log(`error on ${action.toLowerCase()}...`, e)
+              this.$message({ type: 'info', center: true, message: `${action} canceled` })
+            })
+            .finally(() => {
+              if (!delete_person) {this.dialogFormVisible = false}
+              this.$emit(`updatedSummaryData`)
+            })
+        } catch (e) {
+          console.log(`${this.$options.name} confirmChange error...`, e)
+        }
       },
 
       updateForm (row) {
-        for (let item in row) {
-          if (row.hasOwnProperty(item)) {
-            // console.log(`item=${item} -- row[item]=`, row[item])
-            this.form[item] = row[item]
-            // console.log(`item=${item} -- row[item]=`, this.form[item])
+        try {
+          for (let item in row) {
+            if (row.hasOwnProperty(item)) {
+              // console.log(`item=${item} -- row[item]=`, row[item])
+              this.form[item] = row[item]
+              // console.log(`item=${item} -- row[item]=`, this.form[item])
+            }
           }
+        } catch (e) {
+          console.log(`${this.$options.name} updateForm error...`, e)
         }
       },
 
@@ -234,39 +242,47 @@
       },
 
       runPrank () {
-        if (!this.prankPlayed) {
-          this.$alert(this.prankText, 'Unauthorised!!', {
-            confirmButtonText: 'OK',
-            center: true,
-            type: `error`,
-            // iconClass: `el-icon-bank-card`,
-            callback: action => {
-              this.$message({ type: 'info', center: true, message: `You've ${action}ed lack of authorisation` })
-              setTimeout(() => {
-                this.$alert(`Just kidding... You have full access :)`, 'Authorised!!', {
-                  confirmButtonText: 'OK',
-                  center: true,
-                  type: `success`,
-                  callback: () => {
-                    this.prankPlayed = true
-                    this.$message({ type: 'success', center: true, message: `Prank completed :)` })
-                  }
-                })
-              }, 3000)
-            }
-          })
-        } else {
-          this.$message({
-            type: 'success',
-            center: true,
-            message: `Prank already played - refresh page to see it again... :)`
-          })
-          this.addPerson()
+        try {
+          if (!this.prankPlayed) {
+            this.$alert(this.prankText, 'Unauthorised!!', {
+              confirmButtonText: 'OK',
+              center: true,
+              type: `error`,
+              // iconClass: `el-icon-bank-card`,
+              callback: action => {
+                this.$message({ type: 'info', center: true, message: `You've ${action}ed lack of authorisation` })
+                setTimeout(() => {
+                  this.$alert(`Just kidding... You have full access :)`, 'Authorised!!', {
+                    confirmButtonText: 'OK',
+                    center: true,
+                    type: `success`,
+                    callback: () => {
+                      this.prankPlayed = true
+                      this.$message({ type: 'success', center: true, message: `Prank completed :)` })
+                    }
+                  })
+                }, 3000)
+              }
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              center: true,
+              message: `Prank already played - refresh page to see it again... :)`
+            })
+            this.addPerson()
+          }
+        } catch (e) {
+          console.log(`${this.$options.name} runPrank error...`, e)
         }
       },
 
       addPerson () {
-        this.$message({ type: 'success', center: true, message: `Person added` })
+        try {
+          this.$message({ type: 'success', center: true, message: `Person added` })
+        } catch (e) {
+          console.log(`${this.$options.name} addPerson error...`, e)
+        }
       },
     }
     ,
