@@ -80,6 +80,7 @@ export default {
       return from_age + ` to ` + to_age
     } catch (e) {
       console.log(`Helpers getNumberItemBracket error...`, e)
+      return false
     }
   },
 

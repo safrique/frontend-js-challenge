@@ -167,7 +167,12 @@
     },
 
     computed: {
-      getPeopleData () { return this.getPeople() }
+      getPeopleData () {
+        try { return this.getPeople() } catch (e) {
+          console.log(`${this.$options.name} confirmChange error...`, e)
+          return false
+        }
+      }
     },
 
     methods: {
@@ -219,6 +224,7 @@
             })
         } catch (e) {
           console.log(`${this.$options.name} confirmChange error...`, e)
+          return false
         }
       },
 
@@ -233,6 +239,7 @@
           }
         } catch (e) {
           console.log(`${this.$options.name} updateForm error...`, e)
+          return false
         }
       },
 
@@ -274,6 +281,7 @@
           }
         } catch (e) {
           console.log(`${this.$options.name} runPrank error...`, e)
+          return false
         }
       },
 
@@ -282,6 +290,7 @@
           this.$message({ type: 'success', center: true, message: `Person added` })
         } catch (e) {
           console.log(`${this.$options.name} addPerson error...`, e)
+          return false
         }
       },
     }

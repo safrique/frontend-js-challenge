@@ -51,20 +51,30 @@
     computed: {
       getActiveTabId: { // Manages the active tab to navigate to depending on the URL
         get () {
-          switch (this.$route.name) {
-            case 'charts':
-              return 'charts'
-            case 'map':
-              return 'map'
-            case 'instructions':
-              return 'instructions'
-            default:
-              return 'people-data'
+          try {
+            switch (this.$route.name) {
+              case 'charts':
+                return 'charts'
+              case 'map':
+                return 'map'
+              case 'instructions':
+                return 'instructions'
+              default:
+                return 'people-data'
+            }
+          } catch (e) {
+            console.log(`${this.$options.name} getActiveTabId.get() error...`, e)
+            return false
           }
         },
 
         set (name) {
-          this.$router.push(`/${name === 'people-data' ? '' : name}`)
+          try {
+            this.$router.push(`/${name === 'people-data' ? '' : name}`)
+          } catch (e) {
+            console.log(`${this.$options.name} getActiveTabId.set() error...`, e)
+            return false
+          }
         },
       },
     },
@@ -84,6 +94,7 @@
           // console.log(`emitted updated-summary-data event from parent TheTabs...`)
         } catch (e) {
           console.log(`${this.$options.name} emitUpdatedEvent error...`, e)
+          return false
         }
       },
     },

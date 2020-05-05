@@ -110,6 +110,7 @@
           }
         } catch (e) {
           console.log(`${this.$options.name} setMapData error...`, e)
+          return false
         }
         // console.log(`mapPeopleData...`, this.mapPeopleData)
       },

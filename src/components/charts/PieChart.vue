@@ -33,6 +33,7 @@
           return this.getPeople()
         } catch (e) {
           console.log(`${this.$options.name} getPeopleData error...`, e)
+          return false
         }
       },
 
@@ -49,7 +50,7 @@
               if (this.checkDataBuildChart()) { return false }
             }, 500)
 
-            this.chartBuilt = true
+            this.chartBuilt = false
           }
 
           this.componentKey++
@@ -104,6 +105,7 @@
           }, 500)
         } catch (e) {
           console.log(`${this.$options.name} checkDataBuildChart error...`, e)
+          return false
         }
       },
 
@@ -114,6 +116,7 @@
           if (this.chartData.length) { this.renderChart() }
         } catch (e) {
           console.log(`${this.$options.name} buildPieChart error...`, e)
+          return false
         }
       },
 
@@ -135,6 +138,7 @@
           // console.log(`chartData:`, this.chartData)
         } catch (e) {
           console.log(`${this.$options.name} setChartDat error...`, e)
+          return false
         }
       },
 
@@ -156,6 +160,7 @@
           this.$emit(`renderedChart`, this.value)
         } catch (e) {
           console.log(`${this.$options.name} renderChart error...`, e)
+          return false
         }
       },
     },

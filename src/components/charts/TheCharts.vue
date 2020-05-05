@@ -31,6 +31,7 @@
           this.updateBarChart()
         } catch (e) {
           console.log(`${this.$options.name} updateData error...`, e)
+          return false
         }
       },
 
@@ -43,6 +44,7 @@
           }
         } catch (e) {
           console.log(`${this.$options.name} updateBarChart error...`, e)
+          return false
         }
       },
 
