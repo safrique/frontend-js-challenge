@@ -71,18 +71,20 @@
 
     methods: {
       emitUpdatedEvent () {
-        // console.log(`emitting updated-summary-data event from parent TheTabs...`)
-        // TODO: Check if this $emit is needed...
-        // this.$emit(`updatedSummaryData`)
-        // console.log(`TheTabs refs:`, this.$refs)
-        if (this.$refs.charts) {
-          this.$refs.charts.updateData()
+        try {
+          // console.log(`emitting updated-summary-data event from parent TheTabs...`)
+          // console.log(`TheTabs refs:`, this.$refs)
+          if (this.$refs.charts) {
+            this.$refs.charts.updateData()
+          }
+          if (this.$refs.map) {
+            // console.log(`triggering map update...`)
+            this.$refs.map.makeMap(true)
+          } // else { console.log(`this.$refs.charts not yet registered...`) }
+          // console.log(`emitted updated-summary-data event from parent TheTabs...`)
+        } catch (e) {
+          console.log(`${this.$options.name} emitUpdatedEvent error...`, e)
         }
-        if (this.$refs.map) {
-          // console.log(`triggering map update...`)
-          this.$refs.map.makeMap(true)
-        } // else { console.log(`this.$refs.charts not yet registered...`) }
-        // console.log(`emitted updated-summary-data event from parent TheTabs...`)
       },
     },
   }
