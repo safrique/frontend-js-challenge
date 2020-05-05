@@ -18,11 +18,11 @@
         label="ID"
         width="250">
       </el-table-column>
-<!--      <el-table-column-->
-<!--        :prop="$index"-->
-<!--        label="#"-->
-<!--        width="50">-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column-->
+      <!--        :prop="$index"-->
+      <!--        label="#"-->
+      <!--        width="50">-->
+      <!--      </el-table-column>-->
       <el-table-column
         prop="age"
         label="Age"
@@ -195,16 +195,18 @@
             type: 'warning',
             center: true
           })
-          .then(() => {
-            if (delete_person) {
-              this.getPeopleData.splice(index, 1)
-              // the splice above should take care of deleting the person from the store, but let's make sure...
-              this.DeleteStoreData(person)
-            } else {
-              this.editPersonStoreData(this.form)
-            }
+          .then((action) => {
+            if (action === `confirm`) {
+              if (delete_person) {
+                this.getPeopleData.splice(index, 1)
+                // the splice above should take care of deleting the person from the store, but let's make sure...
+                this.DeleteStoreData(person)
+              } else {
+                this.editPersonStoreData(this.form)
+              }
 
-            this.$message({ type: 'success', center: true, message: `${action} completed` })
+              this.$message({ type: 'success', center: true, message: `${action} completed` })
+            } else { this.$message({ type: 'info', center: true, message: `${action} canceled` }) }
           })
           .catch((e) => {
             console.log(`error on ${action.toLowerCase()}...`, e)
@@ -217,12 +219,21 @@
       },
 
       updateForm (row) {
-        this.form = row
+        for (let item in row) {
+          if (row.hasOwnProperty(item)) {
+            // console.log(`item=${item} -- row[item]=`, row[item])
+            this.form[item] = row[item]
+            // console.log(`item=${item} -- row[item]=`, this.form[item])
+          }
+        }
       },
 
       handleAddPerson () {
         console.log(`add button clicked...`)
+        this.runPrank()
+      },
 
+      runPrank () {
         if (!this.prankPlayed) {
           this.$alert(this.prankText, 'Unauthorised!!', {
             confirmButtonText: 'OK',
@@ -265,4 +276,3 @@
 <style scoped>
 
 </style>
-this.$alert(this.prankText, 'Unauthorised!!', { confirmButtonText: 'OK', center: true, callback: action => { this.$message({ type: 'info', message: `action: ${action}` }) } })
