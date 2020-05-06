@@ -1,40 +1,115 @@
 <template>
   <div id="bar-chart">
+    <h3>{{ chartTitle }}</h3>
     <div id="bar-chart-render" style="width: 100%; height: 400px;"></div>
+    <ChartTable :table-data="chartData" id="bar-chart-table"></ChartTable>
   </div>
 </template>
 
 <script>
+  import ChartTable from '../data/ChartTable'
+
   export default {
     name: 'BarChart',
 
-    created () {
-      AmCharts.makeChart('bar-chart-render',
-        {
-          'type': 'serial',
-          'categoryField': 'type',
-          'chartCursor': {},
-          'graphs': [
-            {
-              'type': 'column',
-              'title': 'Pizza types',
-              'valueField': 'sold',
-              'fillAlphas': 0.8
-            }
-          ],
+    components: {
+      ChartTable,
+    },
 
-          'dataProvider': [
-            { 'type': 'Margherita', 'sold': 120 },
-            { 'type': 'Funghi', 'sold': 82 },
-            { 'type': 'Capricciosa', 'sold': 78 },
-            { 'type': 'Quattro Stagioni', 'sold': 71 }
-          ]
+    data () {
+      return {
+        chartData: [],
+        chartType: `age`,
+        dataType: ``,
+        chartTitle: ``,
+      }
+    },
+
+    methods: {
+      checkDataBuildChart (type = this.chartType) {
+        // console.log(`building ${type} bar chartType=${this.chartType} chart...`)
+        try {
+          // type = type || this.chartType
+          // console.log(`type is now: ${type} && chartType=${this.chartType}`)
+          this.chartType = type
+          // console.log(`chartType=${this.chartType} -- typeof=${typeof this.chartType}...`)
+          this.dataType = `${this.chartType}Data`
+          let cType = this.chartType.toString()
+          this.chartTitle = `People' ${cType.replace(`Color`, ` colour`)}s`
+
+          setTimeout(() => {
+            this.setChartData()
+            this.renderBarChart()
+          }, 500)
+        } catch (e) {
+          console.log(`${this.$options.name} checkDataBuildChart error...`, e)
+          return false
         }
-      )
+      },
+
+      setChartData () {
+        // let data = this.summary.summary[this.dataType]
+        // // console.log(`bar chart data...`, data)
+        // this.chartData = this.buildChartData(data)
+        try {
+          this.chartData = this.buildChartData(this.summary.summary[this.dataType])
+        } catch (e) {
+          console.log(`${this.$options.name} setChartData error...`, e)
+          return false
+        }
+      },
+
+      buildChartData (data) {
+        // console.log(`building bar chart data...`, data)
+        let new_data = []
+
+        try {
+          for (let item in data) {
+            if (data.hasOwnProperty(item)) {
+              // console.log(`item=${item} -- data[key]...`, data[item])
+              new_data.push({ 'category': item, 'value': data[item] })
+            }
+          }
+        } catch (e) {
+          console.log(`${this.$options.name} buildChartData error...`, e)
+        }
+
+        // console.log(`new_data...`, new_data)
+        return new_data
+      },
+
+      renderBarChart () {
+        try {
+          setTimeout(() => {
+            AmCharts.makeChart('bar-chart-render',
+              {
+                'type': 'serial',
+                'categoryField': 'category',
+                'chartCursor': {},
+                'graphs': [
+                  {
+                    'type': 'column',
+                    'title': this.chartTitle,
+                    'valueField': 'value',
+                    'fillAlphas': 0.8
+                  }
+                ],
+
+                'dataProvider': this.chartData
+              }
+            )
+          }, 500)
+        } catch (e) {
+          console.log(`${this.$options.name} renderBarChart error...`, e)
+          return false
+        }
+      },
     },
   }
 </script>
 
 <style scoped>
-
+  #bar-chart-table {
+    margin-top: 2em;
+  }
 </style>

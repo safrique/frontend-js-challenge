@@ -1,7 +1,7 @@
 <template>
-  <div id="pie-chart">
+  <div id="pie-chart" :key="componentKey">
     Select a category to display:
-    <el-select v-model="value" placeholder="Select">
+    <el-select v-model="value" placeholder="Select" @change="checkDataBuildChart()">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -12,205 +12,157 @@
 
     <div :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>
 
-    <!--    <div v-if="loading"><i class="el-icon-loading"></i> Loading ...</div>-->
-    <!--    <div v-else :loading="loading" id="pie-chart-render" style="width: 100%; height: 400px;"></div>-->
-
-    <!--    <ol>-->
-    <!--      <li-->
-    <!--        v-for="person in getPeopleData"-->
-    <!--        :key="person._id"-->
-    <!--      >-->
-    <!--        {{ person.name }}-->
-    <!--      </li>-->
-    <!--    </ol>-->
-
-    <!--    <div>loading:{{ loading }}</div>-->
-
-    <ol>
-      <li v-for="(value, name) in getPeopleAgeSummary">
-        ages {{ name }} = {{ value }}
-      </li>
-    </ol>
+    <PieChartTable :table-data="chartData"></PieChartTable>
   </div>
 </template>
 
 <script>
+  import Helpers from '../../mixins/Helpers'
+  import PieChartTable from '../data/ChartTable'
+
   export default {
     name: 'PieChart',
 
+    components: {
+      PieChartTable,
+    },
+
     computed: {
       getPeopleData () {
-        return this.people.people
-      },
-
-      getPeopleAgeSummary () {
-        if (Object.keys(this.getPeopleData).length === 0) { return [] }
-        return this.summariseAges(this.getPeoplePropertyData(this.getPeopleData, `age`))
+        try {
+          return this.getPeople()
+        } catch (e) {
+          console.log(`${this.$options.name} getPeopleData error...`, e)
+          return false
+        }
       },
 
       loading () {
-        if (Object.keys(this.getPeopleData).length === 0) {
-          return false
+        // console.log(`check loading -- componentKey=${this.componentKey}...`)
+        try {
+          if (Object.keys(this.getPeopleData).length > 0) {
+            this.options = Helpers.buildPersonAttributes(this.getPeopleData)
+          }
+
+          if (!this.chartBuilt) {
+            // console.log(`chartBuilt=${this.chartBuilt}. #${this.componentKey}..`)
+            setTimeout(() => {
+              if (this.checkDataBuildChart()) { return false }
+            }, 500)
+
+            this.chartBuilt = false
+          }
+
+          this.componentKey++
+        } catch (e) {
+          console.log(`${this.$options.name} loading error...`, e)
         }
-
-        this.options = this.buildPersonAttributes(this.getPeopleData)
-
-        this.makePieChart(`age`)
         return true
-      },
-
-      getPersonAttributes () {
-        this.buildPersonAttributes(this.getPeopleData)
       },
     },
 
     data () {
       return {
         options: [],
-        value: ''
+        value: `age`,
+        componentKey: 0,
+        chartData: [],
+        chartBuilt: false,
       }
     },
 
     methods: {
-      getPeoplePropertyData (people, category) {
-        let data = {}
+      checkDataBuildChart () {
+        try {
+          let category = `${this.value}BracketsData`
+          // console.log(`category=${this.value} -- checking it exists...`)
+          let data = this.summary.summary[category]
 
-        for (let person in people) {
-          if (people.hasOwnProperty(person)) {
-            // console.log(`person:${person} -- data`, people[person])
-            // console.log(`${category}:${people[person][category]} -- type=${typeof people[person][category]}`)
+          if (this.value !== `age` && typeof data === `undefined`) {
+            // console.log(`chart data undefined - setting it again...`)
+            data = this.setNewCategoryData(category, this.value)
+            // console.log(`reset chart data...`, data)
+          }
+          // console.log(`chart data...`, data)
 
-            if (data.hasOwnProperty(people[person][category])) {
-              data[people[person][category]]++
-              continue
+          // console.log(`waiting before carrying on...`)
+          // the data seems to take a bit of time before being set in the vuex store so we have to wait a little
+          setTimeout(() => {
+            // console.log(`waited - trying again...`)
+            if (typeof data === `undefined`) {
+              // console.log(`data still undefined - going to trying again...`)
+              data = this.summary.summary[category]
+              // console.log(`tried again...`, data)
             }
 
-            data[people[person][category]] = 1
-          }
+            // console.log(`checking data again...`)
+            if (typeof data !== `undefined`) {
+              this.buildPieChart(data)
+              return true
+            }
+            // console.log(`data still undefined - exiting...`)
+            return false
+          }, 500)
+        } catch (e) {
+          console.log(`${this.$options.name} checkDataBuildChart error...`, e)
+          return false
         }
-
-        // console.log(`data:`, data)
-        return data
       },
 
-      buildPersonAttributes (people) {
-        let data = []
-        let nested = [
-          `preferences`,
-          `location`
-        ]
-        let exclude = [
-          `_id`,
-          `name`,
-          `longitude`,
-          `latitude`,
-        ]
-        let person = people[0]
-        // console.log(`--- person:`, person)
+      buildPieChart (input) {
+        // console.log(`building the ${this.value} chart...`)
+        try {
+          this.setChartData(input)
+          if (this.chartData.length) { this.renderChart() }
+        } catch (e) {
+          console.log(`${this.$options.name} buildPieChart error...`, e)
+          return false
+        }
+      },
 
-        for (let item in person) {
-          let val
-          if (person.hasOwnProperty(item)) {
-            if (nested.includes(item)) {
-              // console.log(`item ${item} is nested`)
-              for (let sub_item in person[item]) {
-                if (person[item].hasOwnProperty(sub_item)) {
-                  // console.log(`sub_item ${sub_item} in person[item]=${person[item][sub_item]}`)
-                  if (!exclude.includes(sub_item)) {
-                    // console.log(`sub_item=${sub_item} included`)
-                    data.push({
-                      value: sub_item,
-                      label: sub_item
-                    })
-                    // continue
-                  }
-                  // console.log(`sub_item=${sub_item} excluded`)
-                }
+      setChartData (input) {
+        try {
+          let display_data = []
+
+          for (let group in input) {
+            if (input.hasOwnProperty(group)) {
+              let new_obj = {
+                'category': group,
+                'value': input[group],
               }
-            } else {
-              // console.log(`item ${item} in person=${person[item]}`)
-              if (!exclude.includes(item)) {
-                // console.log(`item=${item} included`)
-                data.push({
-                  value: item,
-                  label: item
-                })
-                // continue
+              display_data.push(new_obj)
+            }
+          }
+
+          this.chartData = display_data
+          // console.log(`chartData:`, this.chartData)
+        } catch (e) {
+          console.log(`${this.$options.name} setChartDat error...`, e)
+          return false
+        }
+      },
+
+      renderChart () {
+        try {
+          setTimeout(() => {
+            // console.log(`building ${this.value} chart now...`)
+            AmCharts.makeChart('pie-chart-render',
+              {
+                'type': 'pie',
+                'titleField': 'category',
+                'valueField': 'value',
+                'dataProvider': this.chartData
               }
-              // console.log(`item=${item} excluded`)
-            }
-          }
+            )
+            // console.log(`chart built...`)
+          }, 500)
+
+          this.$emit(`renderedChart`, this.value)
+        } catch (e) {
+          console.log(`${this.$options.name} renderChart error...`, e)
+          return false
         }
-
-        // console.log(`data:`, data)
-        return data
       },
-
-      summariseAges (data) {
-        let summary = {}
-
-        for (let age in data) {
-          if (data.hasOwnProperty(age)) {
-            age = parseInt(age)
-            let from_age = (Math.trunc(age / 10) * 10).toString()
-            let to_age = ((Math.trunc(age / 10) + 1) * 10 - 1).toString()
-            let bracket = from_age + ` to ` + to_age
-            // console.log(`age=${age} -- data=${data[age]} -- bracket:${bracket} -- summary`, summary)
-
-            if (summary.hasOwnProperty(bracket)) {
-              summary[bracket] += data[age]
-              // console.log(`summary after updating:`, summary)
-              continue
-            }
-
-            summary[bracket] = data[age]
-            // console.log(`summary after insert:`, summary)
-          }
-        }
-
-        // console.log(`age summary:`, summary)
-        return summary
-      },
-
-      makePieChart (type) {
-        return this.buildChart(this.getPeopleAgeSummary)
-      },
-
-      buildChart (obj) {
-        let data = []
-        // console.log(`buildChart obj length=${Object.keys(obj).length}`, obj)
-
-        for (let group in obj) {
-          if (obj.hasOwnProperty(group)) {
-            let new_obj = {
-              'category': group,
-              'value': obj[group],
-            }
-            // console.log(`new_obj`, new_obj)
-            data.push(new_obj)
-          }
-        }
-        // console.log(`age data:`, data)
-
-        return AmCharts.makeChart('pie-chart-render',
-          {
-            'type': 'pie',
-            'titleField': 'category',
-            'valueField': 'value',
-            'dataProvider': data
-          }
-        )
-      },
-
-      displayData () {
-        // console.log(`pie chart data`, this.getPeopleData)
-        console.log(`age data`, this.getPeopleAgeSummary)
-      },
-    },
-
-    created () {
-      // this.makePieChart(`age`)
-      // this.displayData()
     },
   }
 </script>

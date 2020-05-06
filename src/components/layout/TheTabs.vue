@@ -1,22 +1,30 @@
 <template>
   <div id="the-tabs">
     <el-tabs v-model="getActiveTabId" type="border-card">
-      <el-tab-pane name="people-data">
+      <el-tab-pane
+        name="people-data"
+        :lazy="true">
         <span slot="label"><i class="el-icon-s-grid"></i> Table</span>
-        <PeopleData></PeopleData>
+        <PeopleData @updatedSummaryData="emitUpdatedEvent"></PeopleData>
       </el-tab-pane>
 
-      <el-tab-pane name="charts">
+      <el-tab-pane
+        name="charts"
+        :lazy="true">
         <span slot="label"><i class="el-icon-pie-chart"></i> Charts</span>
-        <TheCharts></TheCharts>
+        <TheCharts ref="charts"></TheCharts>
       </el-tab-pane>
 
-      <el-tab-pane name="map">
+      <el-tab-pane
+        name="map"
+        :lazy="true">
         <span slot="label"><i class="el-icon-location-outline"></i> Map</span>
-        <MapChart></MapChart>
+        <MapChart ref="map"></MapChart>
       </el-tab-pane>
 
-      <el-tab-pane name="instructions">
+      <el-tab-pane
+        name="instructions"
+        :lazy="true">
         <span slot="label"><i class="el-icon-notebook-1"></i> Instructions</span>
         <AppInstructions></AppInstructions>
       </el-tab-pane>
@@ -43,21 +51,57 @@
     computed: {
       getActiveTabId: { // Manages the active tab to navigate to depending on the URL
         get () {
-          switch (this.$route.name) {
-            case 'charts':
-              return 'charts'
-            case 'map':
-              return 'map'
-            case 'instructions':
-              return 'instructions'
-            default:
-              return 'people-data'
+          try {
+            // console.log(`getting tab name...`)
+            // let name = this.$route.name
+            // console.log(`route name=${name}`)
+            // switch (name) {
+            switch (this.$route.name) {
+              case 'charts':
+                return 'charts'
+              case 'map':
+                return 'map'
+              case 'instructions':
+                return 'instructions'
+              default:
+                return 'people-data'
+            }
+          } catch (e) {
+            console.log(`${this.$options.name} getActiveTabId.get() error...`, e)
+            return false
           }
         },
 
         set (name) {
-          this.$router.push(`/${name === 'people-data' ? '' : name}`)
+          try {
+            // console.log(`setting new tab name...`)
+            this.$router.push(`/${name === 'people-data' ? '' : name}`)
+            // console.log(`new tab name set...`)
+          } catch (e) {
+            console.log(`${this.$options.name} getActiveTabId.set() error...`, e)
+            return false
+          }
         },
+      },
+    },
+
+    methods: {
+      emitUpdatedEvent () {
+        try {
+          // console.log(`emitting updated-summary-data event from parent TheTabs...`)
+          // console.log(`TheTabs refs:`, this.$refs)
+          if (this.$refs.charts) {
+            this.$refs.charts.updateData()
+          }
+          if (this.$refs.map) {
+            // console.log(`triggering map update...`)
+            this.$refs.map.makeMap(true)
+          } // else { console.log(`this.$refs.charts not yet registered...`) }
+          // console.log(`emitted updated-summary-data event from parent TheTabs...`)
+        } catch (e) {
+          console.log(`${this.$options.name} emitUpdatedEvent error...`, e)
+          return false
+        }
       },
     },
   }
@@ -66,6 +110,7 @@
 <style scoped>
   #the-tabs {
     margin-top: 2em;
+    margin-bottom: 36px !important;
     color: #2c3e50 !important;
   }
 </style>

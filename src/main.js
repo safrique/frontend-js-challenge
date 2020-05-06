@@ -13,27 +13,36 @@ import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 // importing ElementUI CSS in index.html as the damn url-loader for the ttf file wouldn't work
 
-window.Vue = Vue
+try {
+  window.Vue = Vue
 
-Object.defineProperty(Vue.prototype, '_', { value: _ })
+  Object.defineProperty(Vue.prototype, '_', { value: _ })
 
-Vue.use(ElementUI, { locale })
-Vue.use(Vuex)
-Vue.use(VueRouter)
-const router = new VueRouter({ routes, mode: 'history', })
+  Vue.use(ElementUI, { locale })
+  Vue.use(Vuex)
+  Vue.use(VueRouter)
+  const router = new VueRouter({ routes, mode: 'history', })
 
-Vue.mixin(StoreFunctions)
+  Vue.mixin(StoreFunctions)
 
-new Vue({
-  el: '#app',
-  // components: { App },
-  store,
-  router,
-  _,
-  AmCharts,
-  AmSerial,
-  AmPieChart,
-  mixins: [StoreFunctions],
-  created () {this.loadPeopleData()},
-  render: h => h(App)
-})
+  new Vue({
+    el: '#app',
+    // components: { App },
+    store,
+    router,
+    _,
+    AmCharts,
+    AmSerial,
+    AmPieChart,
+
+    mixins: [StoreFunctions],
+
+    created () {
+      this.loadPeopleData()
+    },
+
+    render: h => h(App)
+  })
+} catch (e) {
+  console.log(`main.js error...`, e)
+}
