@@ -1,5 +1,5 @@
 import { mapGetters, mapActions, mapState } from 'vuex'
-import api_data from '../../services/api/data-suade-sample'
+import api_data from '../services/api/data-suade-sample'
 
 export default {
   computed: {
