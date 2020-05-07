@@ -1,9 +1,9 @@
 <template>
     <span class="the-author">
       {{ created_by }}
-      <a href="http://safrique.uk" target="_blank">
+      <span>
         {{ author }} <img class="pulse" src="../../assets/img/sfq-full.png" height="13" alt="safrique logo"/>
-      </a>
+      </span>
     </span>
 </template>
 
