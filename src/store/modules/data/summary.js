@@ -49,6 +49,7 @@ const actions = {
   setData ({ commit, state }, payload) {
     try {
       commit('SET_DATA', payload)
+      return state.summary[`${payload.category}Data`]
     } catch (e) {
       console.log(`summary.js setData error...`, e)
       return false
@@ -58,6 +59,7 @@ const actions = {
   setBracketsData ({ commit, state }, payload) {
     try {
       commit('SET_BRACKETS_DATA', payload)
+      return state.summary[`${payload.category}BracketsData`]
     } catch (e) {
       console.log(`summary.js setBracketsData error...`, e)
       return false
