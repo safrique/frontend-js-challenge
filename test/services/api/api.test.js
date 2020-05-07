@@ -1,8 +1,8 @@
 //
 
 import { shallowMount } from '@vue/test-utils'
-import api from '../../../services/api/api'
-import data from '../../../assets/docs/people-data.json'
+import api from '../../../src/services/api/api'
+import data from '../../../src/assets/docs/people-data.json'
 
 // const wrapper = shallowMount(api)
 

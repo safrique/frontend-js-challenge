@@ -1,7 +1,7 @@
 // import { shallowMount } from '@vue/test-utils'
 
-import PieChart from '../../components/charts/PieChart'
-import PieChartTable from '../../components/data/ChartTable'
+import PieChart from '../../src/components/charts/PieChart'
+import PieChartTable from '../../src/components/data/ChartTable'
 
 // Trying to use ElementUI customer elements - TODO: try find a fix for not recognising them
 import { shallowMount, createLocalVue } from '@vue/test-utils'
