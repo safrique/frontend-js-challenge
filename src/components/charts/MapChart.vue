@@ -108,6 +108,7 @@
               })
             } //else {console.log(`people does NOT have own property person=${person}...`)}
           }
+          return true
         } catch (e) {
           console.log(`${this.$options.name} setMapData error...`, e)
           return false
