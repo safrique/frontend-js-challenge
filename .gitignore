@@ -14,3 +14,4 @@ yarn-error.log
 # Sample test files to get jest up and running
 /src/test/sum.js
 /src/test/sum.test.js
+/coverage/
