@@ -52,7 +52,8 @@
       "vue"
     ],
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "\\.css$": "<rootDir>/__mocks__/styleMock.js"
     },
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",

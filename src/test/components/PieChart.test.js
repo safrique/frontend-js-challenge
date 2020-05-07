@@ -1,13 +1,13 @@
-import { shallowMount } from '@vue/test-utils'
+// import { shallowMount } from '@vue/test-utils'
 
 import PieChart from '../../components/charts/PieChart'
 import PieChartTable from '../../components/data/ChartTable'
 
-// // Trying to use ElementUI customer elements - TODO: try find a fix for not recognising them
-// import { shallowMount, createLocalVue } from '@vue/test-utils'
-// import ElementUI from 'element-ui'
-// const localVue = createLocalVue()
-// localVue.use(ElementUI)
+// Trying to use ElementUI customer elements - TODO: try find a fix for not recognising them
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import ElementUI from 'element-ui'
+const localVue = createLocalVue()
+localVue.use(ElementUI)
 
 const wrapper = shallowMount(PieChart)
 
