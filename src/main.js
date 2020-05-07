@@ -27,14 +27,13 @@ try {
 
   new Vue({
     el: '#app',
-    // components: { App },
+
     store,
     router,
     _,
     AmCharts,
     AmSerial,
     AmPieChart,
-    // ElementCSS,
 
     mixins: [StoreFunctions],
 
