@@ -1,23 +1,22 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import ElementUI from 'element-ui'
+import { shallowMount } from '@vue/test-utils'
 
 import PieChart from '../../components/charts/PieChart'
 import PieChartTable from '../../components/data/ChartTable'
 
-// Trying to use ElementUI customer elements - TODO: try find a fix for not recognising them
-const localVue = createLocalVue()
-localVue.use(ElementUI)
+// // Trying to use ElementUI customer elements - TODO: try find a fix for not recognising them
+// import { shallowMount, createLocalVue } from '@vue/test-utils'
+// import ElementUI from 'element-ui'
+// const localVue = createLocalVue()
+// localVue.use(ElementUI)
 
 const wrapper = shallowMount(PieChart)
 
 describe(`PieChart`, () => {
-  // Check it renders as a Vue instance
   it('PieChart renders a vue instance', () => {
     expect(wrapper.isVueInstance()).toBe(true)
   })
 
-  // Test the initial type of data displayed
-  it(`initial value=age`, () => {
+  it(`initial value=age, i.e. type of data displayed`, () => {
     expect(wrapper.vm.$data.value).toBe(`age`)
   })
 
