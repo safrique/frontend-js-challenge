@@ -25,6 +25,7 @@
     "not ie <= 8"
   ],
   "devDependencies": {
+    "@vue/test-utils": "^1.0.2",
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
@@ -35,11 +36,11 @@
     "file-loader": "^1.1.4",
     "jest": "^21.2.1",
     "jest-serializer-vue": "^0.2.0",
-    "vue-jest": "^2.6.0",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
     "url-loader": "^4.1.0",
+    "vue-jest": "^2.6.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
