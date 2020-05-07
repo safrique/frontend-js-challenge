@@ -233,11 +233,11 @@
               } else { this.$message({ type: 'info', center: true, message: `${action} canceled` }) }
             })
             .catch((e) => {
-              console.log(`error on ${action.toLowerCase()}...`, e)
+              if (e !== `cancel`) { console.log(`error on ${action.toLowerCase()}...`, e) }
               this.$message({ type: 'info', center: true, message: `${action} canceled` })
             })
             .finally(() => {
-              if (!deletePerson) {this.dialogFormVisible = false}
+              if (!deletePerson) { this.dialogFormVisible = false }
               this.$emit(`updatedSummaryData`)
             })
         } catch (e) {
@@ -257,6 +257,8 @@
               // console.log(`item=${item} -- row[item]=`, this.form[item])
             }
           }
+
+          return true
         } catch (e) {
           console.log(`${this.$options.name} updateForm error...`, e)
           return false
@@ -291,13 +293,14 @@
                 }, 3000)
               }
             })
+            return true
           } else {
             this.$message({
               type: 'success',
               center: true,
               message: `Prank already played - refresh page to see it again... :)`
             })
-            this.handleAddNewPerson()
+            return this.handleAddNewPerson()
           }
         } catch (e) {
           console.log(`${this.$options.name} runPrank error...`, e)
@@ -311,6 +314,7 @@
           this.form._id = Helpers.generateRandomString(24)
           this.addingPerson = true
           this.dialogFormVisible = true
+          return true
         } catch (e) {
           console.log(`${this.$options.name} handleAddNewPerson error...`, e)
           return false
@@ -330,6 +334,7 @@
               if (action === `confirm`) {
                 this.people.people.push(this.form)
                 this.$message({ type: 'success', center: true, message: `Adding new person completed` })
+                return true
               } else { this.$message({ type: 'info', center: true, message: `Adding new person canceled` }) }
             })
             .catch((e) => {
