@@ -97,8 +97,7 @@
 
             // console.log(`checking data again...`)
             if (typeof data !== `undefined`) {
-              this.buildPieChart(data)
-              return true
+              return this.buildPieChart(data)
             }
             // console.log(`data still undefined - exiting...`)
             return false
@@ -112,8 +111,7 @@
       buildPieChart (input) {
         // console.log(`building the ${this.value} chart...`)
         try {
-          this.setChartData(input)
-          if (this.chartData.length) { this.renderChart() }
+          if (this.setChartData(input)) { return this.renderChart() }
         } catch (e) {
           console.log(`${this.$options.name} buildPieChart error...`, e)
           return false
@@ -136,6 +134,7 @@
 
           this.chartData = display_data
           // console.log(`chartData:`, this.chartData)
+          return (this.chartData.length > 0)
         } catch (e) {
           console.log(`${this.$options.name} setChartDat error...`, e)
           return false
@@ -154,10 +153,11 @@
                 'dataProvider': this.chartData
               }
             )
-            // console.log(`chart built...`)
-          }, 500)
 
-          this.$emit(`renderedChart`, this.value)
+            this.$emit(`renderedChart`, this.value)
+            // console.log(`chart built...`)
+            return true
+          }, 500)
         } catch (e) {
           console.log(`${this.$options.name} renderChart error...`, e)
           return false
