@@ -38,8 +38,8 @@
           this.chartTitle = `People' ${cType.replace(`Color`, ` colour`)}s`
 
           setTimeout(() => {
-            this.setChartData()
-            this.renderBarChart()
+            if (this.setChartData()) { return this.renderBarChart() }
+            return false
           }, 500)
         } catch (e) {
           console.log(`${this.$options.name} checkDataBuildChart error...`, e)
@@ -53,6 +53,7 @@
         // this.chartData = this.buildChartData(data)
         try {
           this.chartData = this.buildChartData(this.summary.summary[this.dataType])
+          return (this.chartData.length > 0)
         } catch (e) {
           console.log(`${this.$options.name} setChartData error...`, e)
           return false
@@ -75,7 +76,7 @@
         }
 
         // console.log(`new_data...`, new_data)
-        return new_data
+        return (new_data.length > 0 ? new_data : false)
       },
 
       renderBarChart () {
@@ -98,6 +99,7 @@
                 'dataProvider': this.chartData
               }
             )
+            return true
           }, 500)
         } catch (e) {
           console.log(`${this.$options.name} renderBarChart error...`, e)
