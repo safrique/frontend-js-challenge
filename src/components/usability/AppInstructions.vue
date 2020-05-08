@@ -15,6 +15,8 @@
         </template>
         <h3>You are here <i class="el-icon-location"></i></h3>
         <div>Open each tab below for instructions on functionality to be found on each tab above.</div>
+        <div>Each tab above can be navigated to by clicking on the tab or adding /charts, /map or /instructions to the
+          end of the URL. The default tab is the Table tab.</div>
       </el-collapse-item>
       <el-collapse-item title="Table" name="2">
         <template slot="title">
