@@ -2,14 +2,24 @@
   <div class="people-data">
     <h1>People Data</h1>
 
+    <div id="delete_button">
+      <el-button type="warning" plain @click="deleteSelectedPeople()">Delete selected</el-button>
+    </div>
+
     <el-table
       :data="getPeopleData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
-      max-height="500">
+      max-height="500"
+      ref="multipleTable"
+      @selection-change="handleSelectionChange">
+      <el-table-column
+        type="selection"
+        width="35">
+      </el-table-column>
       <el-table-column
         prop="name"
         label="Name"
-        width="200"
+        width="190"
         sortable
         fixed>
       </el-table-column>
@@ -22,7 +32,7 @@
       <el-table-column
         prop="_id"
         label="ID"
-        width="250">
+        width="220">
       </el-table-column>
       <el-table-column
         prop="age"
@@ -92,7 +102,7 @@
           <el-input
             v-model="search"
             size="mini"
-            placeholder="Type a name to search"/>
+            placeholder="Search name"/>
           <el-button
             type="primary"
             round
@@ -118,7 +128,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="Shipping address" :visible.sync="dialogFormVisible">
+    <el-dialog title="Person data" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="ID" :label-width="formLabelWidth">
           <el-input v-model="form._id" :disabled="true"></el-input>
@@ -182,6 +192,7 @@
           { text: 'banana', value: 'banana' },
           { text: 'mango', value: 'mango' },
         ],
+        multipleSelection: [],
         form: {},
       }
     },
@@ -214,6 +225,42 @@
         let item = this.getFilterItemType(column.property)
         // console.log(`value=${value} -- column.property: c.p.type=${typeof column.property} -- c.p.value=${column.property} -- item=${item}`)
         return row.preferences[item] === value
+      },
+
+      deleteSelectedPeople () {
+        if (this.multipleSelection.length > 0) {
+          // console.log(`multipleSelection`, this.multipleSelection)
+          this.$confirm(`This will permanently the selected details. Continue?`,
+            'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning',
+              center: true
+            })
+            .then((clicked) => {
+              if (clicked === `confirm`) {
+                for (let person in this.multipleSelection) {
+                  if (this.multipleSelection.hasOwnProperty(person)) {
+                    // console.log(`selected person to delete...`, this.multipleSelection[person])
+                    this.DeleteStoreData(this.multipleSelection[person])
+                  }
+                }
+
+                this.$emit(`updatedSummaryData`)
+                this.$message({ type: 'success', center: true, message: `details deleted` })
+              } else { this.$message({ type: 'info', center: true, message: `delete canceled` }) }
+            })
+            .catch((e) => {
+              if (e !== `cancel`) { console.log(`error on selection delete...`, e) }
+              this.$message({ type: 'info', center: true, message: `delete canceled` })
+            })
+        } else {
+          this.$message({ type: 'warning', center: true, message: `No selections made to delete` })
+        }
+      },
+
+      handleSelectionChange (val) {
+        this.multipleSelection = val
       },
 
       resetForm () {
@@ -256,8 +303,9 @@
       confirmChange (deletePerson = false, person = null, index = null) {
         try {
           let action = (deletePerson ? `Delete` : `Edit`)
+          let name = (person ? person.name : this.form.name)
 
-          this.$confirm(`This will permanently ${action.toLowerCase()} the person's details. Continue?`,
+          this.$confirm(`This will permanently ${action.toLowerCase()} the ${name}'s details. Continue?`,
             'Warning', {
               confirmButtonText: 'OK',
               cancelButtonText: 'Cancel',
@@ -406,5 +454,8 @@
 </script>
 
 <style scoped>
-
+  #delete_button {
+    margin-bottom: 0.5em;
+    text-align: left !important;
+  }
 </style>
