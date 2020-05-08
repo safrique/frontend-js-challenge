@@ -295,6 +295,7 @@
               latitude: '',
             },
           }
+          if (this.$refs['form']) this.$refs['form'].resetFields()
         } catch (e) {
           console.log(`${this.$options.name} resetForm error...`, e)
           return false
@@ -367,14 +368,17 @@
 
       handleEditConfirmClicked () {
         this.$refs['form'].validate((valid) => {
-          console.log(`validate=${valid} -- name=${this.form.name} -- rules:`, this.rules.name)
+          // console.log(`validate=${valid} -- name=${this.form.name} -- rules:`, this.rules.name)
           if (valid) {
-            // alert('submit!')
             if (this.addingPerson) {
               this.addNewPerson()
             } else { this.confirmEdit() }
           } else {
-            console.log('error submit!!')
+            this.$message({
+              type: 'error',
+              center: true,
+              message: `Form validation failed. Please fix the validation errors before submitting`
+            })
             return false
           }
         })
@@ -403,10 +407,14 @@
                 }
 
                 this.$message({ type: 'success', center: true, message: `${action} completed` })
-              } else { this.$message({ type: 'info', center: true, message: `${action} canceled` }) }
+              } else {
+                this.resetForm()
+                this.$message({ type: 'info', center: true, message: `${action} canceled` })
+              }
             })
             .catch((e) => {
               if (e !== `cancel`) { console.log(`error on ${action.toLowerCase()}...`, e) }
+              this.resetForm()
               this.$message({ type: 'info', center: true, message: `${action} canceled` })
             })
             .finally(() => {
