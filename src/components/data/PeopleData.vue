@@ -52,13 +52,19 @@
           prop="preferences[pet]"
           label="Pet"
           align="center"
-          width="120">
+          width="120"
+          :filters="petFilters"
+          :filter-method="filterItem"
+          filter-placement="bottom-end">
         </el-table-column>
         <el-table-column
           prop="preferences[fruit]"
           label="Fruit"
           align="center"
-          width="120">
+          width="120"
+          :filters="fruitFilters"
+          :filter-method="filterItem"
+          filter-placement="bottom-end">
         </el-table-column>
       </el-table-column>
       <el-table-column
@@ -79,7 +85,7 @@
       </el-table-column>
       <el-table-column
         align="center"
-      width="160">
+        width="160">
         <template
           slot="header"
           slot-scope="scope">
@@ -164,7 +170,18 @@
         prankPlayed: false,
         prankText: `Sorry, you don't have access to this functionality! Please upgrade your subscription to have access to this!`,
         addingPerson: false,
-
+        petFilters: [
+          { text: 'bird', value: 'bird' },
+          { text: 'cat', value: 'cat' },
+          { text: 'none', value: 'none' },
+          { text: 'dog', value: 'dog' },
+        ],
+        fruitFilters: [
+          { text: 'apple', value: 'apple' },
+          { text: 'strawberry', value: 'strawberry' },
+          { text: 'banana', value: 'banana' },
+          { text: 'mango', value: 'mango' },
+        ],
         form: {},
       }
     },
@@ -175,7 +192,7 @@
           console.log(`${this.$options.name} getPeopleData error...`, e)
           return false
         }
-      }
+      },
     },
 
     methods: {
@@ -187,6 +204,16 @@
 
       indexMethod (index) {
         return index
+      },
+
+      getFilterItemType (property) {
+        return property.replace(`preferences[`, ``).replace(`]`, ``)
+      },
+
+      filterItem (value, row, column) {
+        let item = this.getFilterItemType(column.property)
+        // console.log(`value=${value} -- column.property: c.p.type=${typeof column.property} -- c.p.value=${column.property} -- item=${item}`)
+        return row.preferences[item] === value
       },
 
       resetForm () {
