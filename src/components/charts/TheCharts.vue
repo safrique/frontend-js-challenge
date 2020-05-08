@@ -26,9 +26,9 @@
           if (this.$refs.pie) {
             // console.log(`updating PieChart data...`)
             this.$refs.pie.checkDataBuildChart()
-          }
+          } else { return false }
 
-          this.updateBarChart()
+          return this.updateBarChart()
         } catch (e) {
           console.log(`${this.$options.name} updateData error...`, e)
           return false
@@ -40,7 +40,7 @@
           // console.log(`updating ${type} bar chart from TheCharts...`)
           if (this.$refs.bar) {
             // console.log(`updating PieChart data...`)
-            this.$refs.bar.checkDataBuildChart(type)
+            return this.$refs.bar.checkDataBuildChart(type)
           }
         } catch (e) {
           console.log(`${this.$options.name} updateBarChart error...`, e)
@@ -51,7 +51,7 @@
       emitChartBuiltEvent (type) {
         // console.log(`TheCharts refs:`, this.$refs)
         // console.log(`emit type=${type}`)
-        this.updateBarChart(type)
+        return this.updateBarChart(type)
       },
     },
   }

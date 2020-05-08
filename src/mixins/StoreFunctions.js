@@ -1,5 +1,5 @@
 import { mapGetters, mapActions, mapState } from 'vuex'
-import api_data from '../services/api/data-suade-sample'
+import api_data from '../services/api/DataSuadeSample'
 
 export default {
   computed: {
@@ -19,7 +19,12 @@ export default {
           .then(() => {
             let type = `age`
             this.setData({ data: this.getPeople(), category: type })
-              .then(this.setBracketsData({ data: this.getAgeData, category: (type) }))
+              .then(() => {
+                if (this.getPeople().length > 0) {
+                  return this.setBracketsData({ data: this.getAgeData, category: (type) })
+                }
+                return false
+              })
           })
       } catch (e) {
         console.log(`StoreFunctions loadPeopleData error...`, e)

@@ -4,32 +4,11 @@
   <meta charset="utf-8">
   <title>Frontend JS Challenge</title>
 
-  <!-- import Element UI CSS -->
-  <!-- importing this here as the damn url-loader for the ttf file wouldn't work for importing in main.js -->
-  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-
   <!-- import AmMaps - can't install -->
   <link href="https://www.amcharts.com/lib/3/ammap.css" rel="stylesheet">
   <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
   <script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
   <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-
-  <!-- catch-all error reporting message -->
-  <script type="text/javascript">
-    // window.onerror = function myErrorHandler (errorMsg, url, lineNumber) {
-    //   alert(`Error occurred: ${errorMsg} at line number=${lineNumber} on url=${url}`)
-    //   return false
-    // }
-    // window.onerror = function (message, file, line, col, error) {
-    //   alert(`Error occurred: ${error.message}`)
-    //   return false
-    // }
-
-    window.addEventListener('error', (e) => {
-      console.log(`Error occurred: ${e.error.message}`)
-      return false
-    })
-  </script>
 </head>
 <body>
 <div id="app"></div>

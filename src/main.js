@@ -11,7 +11,7 @@ import AmPieChart from 'amcharts3/amcharts/pie'
 import StoreFunctions from './mixins/StoreFunctions'
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
-// importing ElementUI CSS in index.html as the damn url-loader for the ttf file wouldn't work
+// importing ElementUI CSS in App.vue as the damn url-loader for the ttf file wouldn't work
 
 try {
   window.Vue = Vue
@@ -27,7 +27,7 @@ try {
 
   new Vue({
     el: '#app',
-    // components: { App },
+
     store,
     router,
     _,

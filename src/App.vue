@@ -26,6 +26,10 @@
 </script>
 
 <style lang="scss">
+  /* import Element UI CSS */
+  /* importing this here as the damn url-loader for the ttf file wouldn't work for importing in main.js */
+  @import url('https://unpkg.com/element-ui/lib/theme-chalk/index.css');
+
   #app {
     font-family: Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

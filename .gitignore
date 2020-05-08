@@ -10,3 +10,8 @@ yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+
+# Sample test files to get jest up and running
+/coverage/
+/test/sum.js
+/test/sum.test.js
