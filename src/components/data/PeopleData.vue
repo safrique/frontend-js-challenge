@@ -3,7 +3,12 @@
     <h1>People Data</h1>
 
     <div id="delete_button">
-      <el-button type="warning" plain @click="deleteSelectedPeople()">Delete selected</el-button>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="Make a selection to delete" placement="top-start">
+        <el-button type="warning" plain @click="deleteSelectedPeople()">Delete selected</el-button>
+      </el-tooltip>
     </div>
 
     <el-table
@@ -99,10 +104,16 @@
         <template
           slot="header"
           slot-scope="scope">
-          <el-input
-            v-model="search"
-            size="mini"
-            placeholder="Search name"/>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Start typing in here to search for a name"
+            placement="top-start">
+            <el-input
+              v-model="search"
+              size="mini"
+              placeholder="Search name"/>
+          </el-tooltip>
           <el-button
             type="primary"
             round
