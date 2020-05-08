@@ -140,32 +140,36 @@
     </el-table>
 
     <el-dialog title="Person data" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="form"
+        class="demo-ruleForm">
         <el-form-item label="ID" :label-width="formLabelWidth">
           <el-input v-model="form._id" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="Name" :label-width="formLabelWidth">
+        <el-form-item label="Name" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Age" :label-width="formLabelWidth">
+        <el-form-item label="Age" :label-width="formLabelWidth" prop="age">
           <el-input v-model="form.age" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Eye Colour" :label-width="formLabelWidth">
+        <el-form-item label="Eye Colour" :label-width="formLabelWidth" prop="eyeColor">
           <el-input v-model="form.eyeColor" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Gender" :label-width="formLabelWidth">
+        <el-form-item label="Gender" :label-width="formLabelWidth" prop="gender">
           <el-input v-model="form.gender" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Pet" :label-width="formLabelWidth">
+        <el-form-item label="Pet" :label-width="formLabelWidth" prop="preferences.pet">
           <el-input v-model="form.preferences.pet" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Fruit" :label-width="formLabelWidth">
+        <el-form-item label="Fruit" :label-width="formLabelWidth" prop="preferences.fruit">
           <el-input v-model="form.preferences.fruit" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Longitude" :label-width="formLabelWidth">
+        <el-form-item label="Longitude" :label-width="formLabelWidth" prop="location.longitude">
           <el-input v-model="form.location.longitude" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Latitude" :label-width="formLabelWidth">
+        <el-form-item label="Latitude" :label-width="formLabelWidth" prop="location.latitude">
           <el-input v-model="form.location.latitude" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -205,6 +209,24 @@
         ],
         multipleSelection: [],
         form: {},
+        rules: {
+          name: [
+            { required: true, message: 'Please enter a name', trigger: 'blur' },
+            { min: 2, max: 100, message: 'Length should be 2 to 100', trigger: 'blur' }
+          ],
+          id: [],
+          age: [],
+          eyeColor: [],
+          gender: [],
+          preferences: {
+            pet: [],
+            fruit: [],
+          },
+          location: {
+            longitude: [],
+            latitude: [],
+          },
+        },
       }
     },
 
@@ -218,6 +240,29 @@
     },
 
     methods: {
+      resetForm () {
+        try {
+          this.form = {
+            name: '',
+            id: '',
+            age: '',
+            eyeColor: '',
+            gender: '',
+            preferences: {
+              pet: '',
+              fruit: '',
+            },
+            location: {
+              longitude: '',
+              latitude: '',
+            },
+          }
+        } catch (e) {
+          console.log(`${this.$options.name} resetForm error...`, e)
+          return false
+        }
+      },
+
       handleEdit (index, row) {
         // console.log(index, row)
         this.updateForm(row)
@@ -274,29 +319,6 @@
         this.multipleSelection = val
       },
 
-      resetForm () {
-        try {
-          this.form = {
-            name: '',
-            id: '',
-            age: '',
-            eyeColor: '',
-            gender: '',
-            preferences: {
-              pet: '',
-              fruit: '',
-            },
-            location: {
-              longitude: '',
-              latitude: '',
-            },
-          }
-        } catch (e) {
-          console.log(`${this.$options.name} resetForm error...`, e)
-          return false
-        }
-      },
-
       handleDelete (index, row) {
         this.confirmChange(true, row, index)
       },
@@ -306,9 +328,18 @@
       },
 
       handleEditConfirmClicked () {
-        if (this.addingPerson) {
-          this.addNewPerson()
-        } else { this.confirmEdit() }
+        this.$refs['form'].validate((valid) => {
+          console.log(`validate=${valid} -- name=${this.form.name} -- rules:`, this.rules.name)
+          if (valid) {
+            // alert('submit!')
+            if (this.addingPerson) {
+              this.addNewPerson()
+            } else { this.confirmEdit() }
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
 
       confirmChange (deletePerson = false, person = null, index = null) {
