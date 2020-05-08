@@ -14,59 +14,72 @@
         fixed>
       </el-table-column>
       <el-table-column
+        type="index"
+        label="#"
+        align="center"
+        :index="indexMethod">
+      </el-table-column>
+      <el-table-column
         prop="_id"
         label="ID"
         width="250">
       </el-table-column>
-      <!--      <el-table-column-->
-      <!--        :prop="$index"-->
-      <!--        label="#"-->
-      <!--        width="50">-->
-      <!--      </el-table-column>-->
       <el-table-column
         prop="age"
         label="Age"
+        align="center"
         width="50"
         sortable>
       </el-table-column>
       <el-table-column
         prop="eyeColor"
         label="Eye Colour"
+        align="center"
         width="100"
         sortable>
       </el-table-column>
       <el-table-column
         prop="gender"
         label="Gender"
+        align="center"
         width="75"
         sortable>
       </el-table-column>
-      <el-table-column label="Preferences">
+      <el-table-column
+        label="Preferences"
+        align="center">
         <el-table-column
           prop="preferences[pet]"
           label="Pet"
+          align="center"
           width="120">
         </el-table-column>
         <el-table-column
           prop="preferences[fruit]"
           label="Fruit"
-          width="120">
-        </el-table-column>
-      </el-table-column>
-      <el-table-column label="Location">
-        <el-table-column
-          prop="location[longitude]"
-          label="Longitude"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="location[latitude]"
-          label="Latitude"
+          align="center"
           width="120">
         </el-table-column>
       </el-table-column>
       <el-table-column
+        label="Location"
         align="center">
+        <el-table-column
+          prop="location[longitude]"
+          label="Longitude"
+          align="center"
+          width="110">
+        </el-table-column>
+        <el-table-column
+          prop="location[latitude]"
+          label="Latitude"
+          align="center"
+          width="110">
+        </el-table-column>
+      </el-table-column>
+      <el-table-column
+        align="center"
+      width="160">
         <template
           slot="header"
           slot-scope="scope">
@@ -84,7 +97,8 @@
             Add Person
           </el-button>
         </template>
-        <template slot-scope="scope">
+        <template
+          slot-scope="scope">
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">Edit
@@ -169,6 +183,10 @@
         // console.log(index, row)
         this.updateForm(row)
         this.dialogFormVisible = true
+      },
+
+      indexMethod (index) {
+        return index
       },
 
       resetForm () {
