@@ -295,7 +295,6 @@
               latitude: '',
             },
           }
-          if (this.$refs['form']) this.$refs['form'].resetFields()
         } catch (e) {
           console.log(`${this.$options.name} resetForm error...`, e)
           return false
@@ -443,18 +442,15 @@
 
                 this.checkAddNewPreferences()
                 this.$message({ type: 'success', center: true, message: `${action} completed` })
-              } else {
-                this.resetForm()
-                this.$message({ type: 'info', center: true, message: `${action} canceled` })
-              }
+              } else { this.$message({ type: 'info', center: true, message: `${action} canceled` }) }
             })
             .catch((e) => {
               if (e !== `cancel`) { console.log(`error on ${action.toLowerCase()}...`, e) }
-              this.resetForm()
               this.$message({ type: 'info', center: true, message: `${action} canceled` })
             })
             .finally(() => {
               if (!deletePerson) { this.dialogFormVisible = false }
+              this.resetForm()
               this.$emit(`updatedSummaryData`)
             })
         } catch (e) {
