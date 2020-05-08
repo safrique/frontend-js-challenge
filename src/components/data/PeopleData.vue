@@ -302,6 +302,45 @@
         }
       },
 
+      checkAddNewPreferences () {
+        for (let person in this.getPeopleData) {
+          if (this.getPeopleData.hasOwnProperty(person)) {
+            for (let type in this.getPeopleData[person].preferences)
+              if (this.getPeopleData[person].preferences.hasOwnProperty(type)) {
+                if (!this.checkPreferenceExists(type, this.getPeopleData[person].preferences[type])) {
+                  this.addNewPreferenceToFilter(type,
+                    {
+                      text: this.getPeopleData[person].preferences[type],
+                      value: this.getPeopleData[person].preferences[type]
+                    })
+                }
+              }
+          }
+        }
+      },
+
+      checkPreferenceExists (type, preference) {
+        if (type === `pet`) {
+          for (let item in this.petFilters) {
+            if (this.petFilters.hasOwnProperty(item) && this.petFilters[item].text === preference) { return true }
+          }
+        }
+
+        for (let item in this.fruitFilters) {
+          if (this.fruitFilters.hasOwnProperty(item) && this.fruitFilters[item].text === preference) { return true }
+        }
+
+        return false
+      },
+
+      addNewPreferenceToFilter (type, typeToAdd) {
+        if (type === `pet`) {
+          this.petFilters.push(typeToAdd)
+          return
+        }
+        this.fruitFilters.push(typeToAdd)
+      },
+
       handleEdit (index, row) {
         // console.log(index, row)
         this.updateForm(row)
@@ -362,17 +401,13 @@
         this.confirmChange(true, row, index)
       },
 
-      confirmEdit () {
-        this.confirmChange()
-      },
-
       handleEditConfirmClicked () {
         this.$refs['form'].validate((valid) => {
           // console.log(`validate=${valid} -- name=${this.form.name} -- rules:`, this.rules.name)
           if (valid) {
             if (this.addingPerson) {
               this.addNewPerson()
-            } else { this.confirmEdit() }
+            } else { this.confirmChange() }
           } else {
             this.$message({
               type: 'error',
@@ -406,6 +441,7 @@
                   this.editPersonStoreData(this.form)
                 }
 
+                this.checkAddNewPreferences()
                 this.$message({ type: 'success', center: true, message: `${action} completed` })
               } else {
                 this.resetForm()
@@ -525,6 +561,7 @@
             .finally(() => {
               this.dialogFormVisible = false
               this.addingPerson = false
+              this.checkAddNewPreferences()
               this.$emit(`updatedSummaryData`)
             })
         } catch (e) {
