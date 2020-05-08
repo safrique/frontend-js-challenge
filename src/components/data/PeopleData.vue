@@ -211,20 +211,58 @@
         form: {},
         rules: {
           name: [
-            { required: true, message: 'Please enter a name', trigger: 'blur' },
+            { type: 'string', required: true, message: 'Please enter a name', trigger: 'blur' },
             { min: 2, max: 100, message: 'Length should be 2 to 100', trigger: 'blur' }
           ],
-          id: [],
-          age: [],
-          eyeColor: [],
-          gender: [],
+          age: [
+            {
+              type: 'integer',
+              min: 0,
+              max: 100,
+              message: 'Please enter a numeric type between 0 and 100',
+              trigger: 'change'
+            },
+            { required: true, message: 'Please enter an age', trigger: 'blur' },
+          ],
+          eyeColor: [
+            { type: 'string', required: true, message: 'Please enter an eye colour', trigger: 'blur' },
+            { min: 2, max: 20, message: 'Length should be 2 to 20', trigger: 'blur' }
+          ],
+          gender: [
+            { type: 'string', required: true, message: 'Please enter a gender', trigger: 'blur' },
+            { min: 2, max: 10, message: 'Length should be 2 to 10', trigger: 'blur' }
+          ],
           preferences: {
-            pet: [],
-            fruit: [],
+            pet: [
+              { type: 'string', required: true, message: 'Please enter a pet', trigger: 'blur' },
+              { min: 2, max: 20, message: 'Length should be 2 to 20', trigger: 'blur' }
+            ],
+            fruit: [
+              { type: 'string', required: true, message: 'Please enter a fruit', trigger: 'blur' },
+              { min: 2, max: 20, message: 'Length should be 2 to 20', trigger: 'blur' }
+            ],
           },
           location: {
-            longitude: [],
-            latitude: [],
+            longitude: [
+              {
+                type: 'number',
+                min: -180,
+                max: 180,
+                required: true,
+                message: 'Please enter a valid longitude between -180 and 180 degrees',
+                trigger: 'blur'
+              },
+            ],
+            latitude: [
+              {
+                type: 'number',
+                min: -180,
+                max: 180,
+                required: true,
+                message: 'Please enter a valid latitude between -180 and 180 degrees',
+                trigger: 'blur'
+              },
+            ],
           },
         },
       }
