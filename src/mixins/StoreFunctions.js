@@ -1,5 +1,6 @@
 import { mapGetters, mapActions, mapState } from 'vuex'
 import api_data from '../services/api/DataSuadeSample'
+import backupData from '../assets/docs/people-data.json'
 
 export default {
   computed: {
@@ -15,9 +16,22 @@ export default {
 
     loadPeopleData () {
       try {
-        api_data.getData().then(response => { this.setPeople(response.data) })
+        let type = `age`
+
+        api_data.getData()
+          .then(response => {
+            if (typeof response.data === `undefined` || response.data.length > 0) {
+              this.setPeople(response.data)
+            } else {
+              console.log(`API response.data had no data - using backup file...`)
+              this.setPeople(backupData)
+            }
+          })
+          .catch((e) => {
+            console.log(`getting data from API error - using backup file...`, e)
+            this.setPeople(backupData)
+          })
           .then(() => {
-            let type = `age`
             this.setData({ data: this.getPeople(), category: type })
               .then(() => {
                 if (this.getPeople().length > 0) {
