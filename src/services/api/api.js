@@ -9,7 +9,7 @@ export default (url) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    })
+    }).get()
   } catch (e) {
     console.log(`api call error...`, e)
   }
