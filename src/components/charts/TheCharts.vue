@@ -19,12 +19,10 @@
     },
 
     methods: {
+      // tells the charts that the data has been changed so re-render
       updateData () {
         try {
-          // console.log(`updateData method triggered in TheCharts...`)
-          // console.log(`TheCharts refs:`, this.$refs)
           if (this.$refs.pie) {
-            // console.log(`updating PieChart data...`)
             this.$refs.pie.checkDataBuildChart()
           } else { return false }
 
@@ -37,9 +35,7 @@
 
       updateBarChart (type) {
         try {
-          // console.log(`updating ${type} bar chart from TheCharts...`)
           if (this.$refs.bar) {
-            // console.log(`updating PieChart data...`)
             return this.$refs.bar.checkDataBuildChart(type)
           }
         } catch (e) {
@@ -49,8 +45,6 @@
       },
 
       emitChartBuiltEvent (type) {
-        // console.log(`TheCharts refs:`, this.$refs)
-        // console.log(`emit type=${type}`)
         return this.updateBarChart(type)
       },
     },

@@ -52,10 +52,6 @@
       getActiveTabId: { // Manages the active tab to navigate to depending on the URL
         get () {
           try {
-            // console.log(`getting tab name...`)
-            // let name = this.$route.name
-            // console.log(`route name=${name}`)
-            // switch (name) {
             switch (this.$route.name) {
               case 'charts':
                 return 'charts'
@@ -74,9 +70,7 @@
 
         set (name) {
           try {
-            // console.log(`setting new tab name...`)
             this.$router.push(`/${name === 'people-data' ? '' : name}`)
-            // console.log(`new tab name set...`)
           } catch (e) {
             console.log(`${this.$options.name} getActiveTabId.set() error...`, e)
             return false
@@ -88,16 +82,12 @@
     methods: {
       emitUpdatedEvent () {
         try {
-          // console.log(`emitting updated-summary-data event from parent TheTabs...`)
-          // console.log(`TheTabs refs:`, this.$refs)
           if (this.$refs.charts) {
             this.$refs.charts.updateData()
           }
           if (this.$refs.map) {
-            // console.log(`triggering map update...`)
             this.$refs.map.makeMap(true)
-          } // else { console.log(`this.$refs.charts not yet registered...`) }
-          // console.log(`emitted updated-summary-data event from parent TheTabs...`)
+          }
         } catch (e) {
           console.log(`${this.$options.name} emitUpdatedEvent error...`, e)
           return false

@@ -27,16 +27,13 @@
 
     methods: {
       checkDataBuildChart (type = this.chartType) {
-        // console.log(`building ${type} bar chartType=${this.chartType} chart...`)
         try {
-          // type = type || this.chartType
-          // console.log(`type is now: ${type} && chartType=${this.chartType}`)
           this.chartType = type
-          // console.log(`chartType=${this.chartType} -- typeof=${typeof this.chartType}...`)
           this.dataType = `${this.chartType}Data`
           let cType = this.chartType.toString()
-          this.chartTitle = `People' ${cType.replace(`Color`, ` colour`)}s`
+          this.chartTitle = `People's ${cType.replace(`Color`, ` colour`)}s`
 
+          // Waiting a bit for the data to be loaded first
           setTimeout(() => {
             if (this.setChartData()) { return this.renderBarChart() }
             return false
@@ -48,9 +45,6 @@
       },
 
       setChartData () {
-        // let data = this.summary.summary[this.dataType]
-        // // console.log(`bar chart data...`, data)
-        // this.chartData = this.buildChartData(data)
         try {
           this.chartData = this.buildChartData(this.summary.summary[this.dataType])
           return (this.chartData.length > 0)
@@ -61,13 +55,11 @@
       },
 
       buildChartData (data) {
-        // console.log(`building bar chart data...`, data)
         let new_data = []
 
         try {
           for (let item in data) {
             if (data.hasOwnProperty(item)) {
-              // console.log(`item=${item} -- data[key]...`, data[item])
               new_data.push({ 'category': item, 'value': data[item] })
             }
           }
@@ -75,7 +67,6 @@
           console.log(`${this.$options.name} buildChartData error...`, e)
         }
 
-        // console.log(`new_data...`, new_data)
         return (new_data.length > 0 ? new_data : false)
       },
 
