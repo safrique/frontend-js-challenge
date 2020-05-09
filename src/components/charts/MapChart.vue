@@ -32,8 +32,9 @@
           setTimeout(() => {
             if (this.mapPeopleData && (this.mapPeopleData.length === 0 || refresh)) { this.setMapData() }
 
+            // wait a little for the data to load before creating the map
             setTimeout(() => {
-              let map = AmCharts.makeChart('map-chart-render', {
+              AmCharts.makeChart('map-chart-render', {
                 'type': 'map',
                 'theme': 'light',
                 'projection': 'eckert3',
@@ -86,13 +87,11 @@
       },
 
       setMapData () {
-        // console.log(`mapPeopleData...`, this.mapPeopleData)
         try {
           this.mapPeopleData = []
           let people = this.getPeople()
 
           for (let person in people) {
-            // console.log(`person=${person} -- name=${people[person].name} -- latitude=${people[person].location.latitude} -- people[person]`, people[person])
             if (people.hasOwnProperty(person)) {
               this.mapPeopleData.push({
                 'type': 'circle',
@@ -106,14 +105,13 @@
                 <strong>Preferences:</strong><br>Pet: ${people[person].preferences.pet}; Fruit: ${people[person].preferences.fruit};<br>
                 <strong>Location:</strong><br>Longitude: ${people[person].location.longitude}; Latitude: ${people[person].location.latitude};`,
               })
-            } //else {console.log(`people does NOT have own property person=${person}...`)}
+            }
           }
           return true
         } catch (e) {
           console.log(`${this.$options.name} setMapData error...`, e)
           return false
         }
-        // console.log(`mapPeopleData...`, this.mapPeopleData)
       },
     },
   }

@@ -2,7 +2,6 @@ export default {
   getPeoplePropertyData (people, category) {
     let data = {}
     try {
-      // console.log(`${category} getPeoplePropertyData people:`, people)
       let preferences = [`pet`, `fruit`]
       let nested = []
       let nested_category
@@ -11,15 +10,10 @@ export default {
         for (let i = 0, j = preferences.length; i < j; i++) { nested.push(preferences[i]) }
         nested_category = `preferences`
       }
-      // console.log(`${category} nested:`, nested)
 
       for (let person in people) {
         if (people.hasOwnProperty(person)) {
-          // console.log(`person:${person} -- data`, people[person])
-          // console.log(`${category}:${people[person][category]} -- type=${typeof people[person][category]}`)
-
           if (nested.includes(category)) {
-            // console.log(`person:${person} -- people[person][nested_category]`, people[person][nested_category])
             if (data.hasOwnProperty(people[person][nested_category][category])) {
               data[people[person][nested_category][category]]++
               continue
@@ -40,35 +34,29 @@ export default {
       console.log(`Helpers getPeoplePropertyData error...`, e)
     }
 
-    // console.log(`getPeoplePropertyData data:`, data)
     return data
   },
 
   getBracketsSummary (data, category) {
     let summary = {}
-    // console.log(`getBracketsSummary data:`, data)
 
     try {
       for (let item in data) {
         if (data.hasOwnProperty(item)) {
           let bracket = (category === `age` ? this.getNumberItemBracket(item) : item)
-          // console.log(`item=${item} -- data=${data[item]} -- bracket:${bracket} -- summary`, summary)
 
           if (summary.hasOwnProperty(bracket)) {
             summary[bracket] += data[item]
-            // console.log(`summary after updating:`, summary)
             continue
           }
 
           summary[bracket] = data[item]
-          // console.log(`summary after insert:`, summary)
         }
       }
     } catch (e) {
       console.log(`Helpers getBracketsSummary error...`, e)
     }
 
-    // console.log(`item summary:`, summary)
     return summary
   },
 
@@ -95,7 +83,6 @@ export default {
       for (let item in person) {
         if (person.hasOwnProperty(item)) {
           if (nested.includes(item)) {
-            // console.log(`item ${item} is nested`)
             for (let sub_item in person[item]) {
               if (person[item].hasOwnProperty(sub_item)) {
                 // console.log(`sub_item ${sub_item} in person[item]=${person[item][sub_item]}`)
@@ -128,7 +115,6 @@ export default {
       console.log(`Helpers buildPersonAttributes error...`, e)
     }
 
-    // console.log(`data:`, data)
     return data
   },
 

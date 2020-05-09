@@ -301,6 +301,7 @@
         }
       },
 
+      // checks if a new pet or fruit was added on adding or editing a person then add it to the filters
       checkAddNewPreferences () {
         for (let person in this.getPeopleData) {
           if (this.getPeopleData.hasOwnProperty(person)) {
@@ -341,7 +342,6 @@
       },
 
       handleEdit (index, row) {
-        // console.log(index, row)
         this.updateForm(row)
         this.dialogFormVisible = true
       },
@@ -356,13 +356,11 @@
 
       filterItem (value, row, column) {
         let item = this.getFilterItemType(column.property)
-        // console.log(`value=${value} -- column.property: c.p.type=${typeof column.property} -- c.p.value=${column.property} -- item=${item}`)
         return row.preferences[item] === value
       },
 
       deleteSelectedPeople () {
         if (this.multipleSelection.length > 0) {
-          // console.log(`multipleSelection`, this.multipleSelection)
           this.$confirm(`This will permanently the selected details. Continue?`,
             'Warning', {
               confirmButtonText: 'OK',
@@ -464,11 +462,7 @@
           this.resetForm()
 
           for (let item in row) {
-            if (row.hasOwnProperty(item)) {
-              // console.log(`item=${item} -- row[item]=`, row[item])
-              this.form[item] = row[item]
-              // console.log(`item=${item} -- row[item]=`, this.form[item])
-            }
+            if (row.hasOwnProperty(item)) { this.form[item] = row[item] }
           }
 
           return true
@@ -479,7 +473,7 @@
       },
 
       handleAddPersonButtonClick () {
-        console.log(`add button clicked...`)
+        // refresh the page and try add a new person from the button at the top of the data table to see what this does... ;)
         this.runPrank()
       },
 
@@ -490,7 +484,6 @@
               confirmButtonText: 'OK',
               center: true,
               type: `error`,
-              // iconClass: `el-icon-bank-card`,
               callback: action => {
                 this.$message({ type: 'info', center: true, message: `You've ${action}ed lack of authorisation` })
                 setTimeout(() => {
